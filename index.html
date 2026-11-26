@@ -1,0 +1,1201 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Career Navigator AI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
+<style>
+/* Layout concept: product-style SaaS shell. Sticky top bar, one hash-routed view below, cards only where an object needs setting off. */
+:root{
+  --bg:#F6F7FB; --surface:#FFFFFF; --surface2:#F0F2F9; --ink:#0E1A3A; --ink2:#4B5679; --ink3:#7F89A8;
+  --line:#E3E7F1; --blue:#2859E6; --blue-soft:#E9EFFF; --violet:#7656E8; --violet-soft:#F0EBFF;
+  --good:#1A8A57; --good-soft:#E3F5EC; --warn:#A8680E; --warn-soft:#FBF0DC;
+  --shadow:0 1px 2px rgba(14,26,58,.05),0 6px 20px rgba(14,26,58,.06);
+  --shadow-lg:0 2px 4px rgba(14,26,58,.05),0 24px 60px rgba(30,50,120,.14);
+  --head:'Manrope','Inter',system-ui,sans-serif; --body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --r:12px; --r-sm:8px; --hdr:rgba(246,247,251,.86);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0B1124; --surface:#131B33; --surface2:#1A2442; --ink:#E9EDFA; --ink2:#A4AECF; --ink3:#7882A5;
+  --line:#25304F; --blue:#6C8DFF; --blue-soft:#1B2A57; --violet:#A18BFF; --violet-soft:#272050;
+  --good:#4CC38A; --good-soft:#12312A; --warn:#E5A94A; --warn-soft:#3A2D12;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); --shadow-lg:0 24px 60px rgba(0,0,0,.45); --hdr:rgba(11,17,36,.86); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1124; --surface:#131B33; --surface2:#1A2442; --ink:#E9EDFA; --ink2:#A4AECF; --ink3:#7882A5;
+  --line:#25304F; --blue:#6C8DFF; --blue-soft:#1B2A57; --violet:#A18BFF; --violet-soft:#272050;
+  --good:#4CC38A; --good-soft:#12312A; --warn:#E5A94A; --warn-soft:#3A2D12;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); --shadow-lg:0 24px 60px rgba(0,0,0,.45); --hdr:rgba(11,17,36,.86); color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.6 var(--body);-webkit-font-smoothing:antialiased;min-height:100vh}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+h1,h2,h3,h4{font-family:var(--head);letter-spacing:-.02em;line-height:1.15;margin:0;text-wrap:balance;color:var(--ink)}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+.ic{width:18px;height:18px;stroke-width:1.9;flex:none}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.page{padding-block:36px 72px}
+.muted{color:var(--ink2)} .small{font-size:13px} .tiny{font-size:12px;color:var(--ink3)}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+/* header */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--hdr);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:20px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font:800 17px var(--head);letter-spacing:-.02em;white-space:nowrap}
+.logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(140deg,var(--blue),var(--violet));display:grid;place-items:center;color:#fff}
+.logo-mark .ic{width:17px;height:17px;stroke:#fff}
+.nav{display:flex;gap:2px;margin-left:12px;min-width:0}
+.nav a{padding:8px 12px;border-radius:8px;color:var(--ink2);font-weight:500;font-size:14px;transition:.15s;white-space:nowrap}
+.nav a:hover{background:var(--surface2);color:var(--ink)}
+.nav a.on{color:var(--ink);background:var(--surface2)}
+.hdr-cta{margin-left:auto;display:flex;gap:8px;align-items:center}
+.burger{display:none;margin-left:auto;background:none;border:1px solid var(--line);border-radius:8px;width:38px;height:38px;place-items:center}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:10px;padding:10px 16px;font-weight:600;font-size:14px;line-height:1.2;transition:transform .15s,box-shadow .15s,background .15s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.2) inset,0 6px 16px -6px var(--blue)}
+.btn-primary:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.btn-ghost{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.btn-ghost:hover{background:var(--surface2)}
+.btn-soft{background:var(--blue-soft);color:var(--blue)}
+.btn-soft:hover{filter:brightness(.97)}
+.btn-lg{padding:14px 22px;font-size:15px;border-radius:12px}
+.btn-sm{padding:7px 11px;font-size:13px;border-radius:8px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;filter:none}
+.icon-btn{width:34px;height:34px;display:grid;place-items:center;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink2);transition:.15s}
+.icon-btn:hover{color:var(--blue);border-color:var(--blue)}
+.icon-btn.on{background:var(--blue-soft);color:var(--blue);border-color:transparent}
+.icon-btn.on .ic{fill:currentColor}
+/* cards & bits */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.pad{padding:22px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--surface2);color:var(--ink2);font-size:12.5px;font-weight:500;border:1px solid transparent}
+button.chip{border-color:var(--line);background:var(--surface)}
+button.chip:hover{border-color:var(--blue);color:var(--blue)}
+button.chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--violet);background:var(--violet-soft);padding:3px 9px;border-radius:6px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))} .g3{grid-template-columns:repeat(3,minmax(0,1fr))} .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.callout{display:flex;gap:12px;padding:14px 16px;border-radius:var(--r);background:var(--blue-soft);color:var(--ink);font-size:13.5px;line-height:1.55}
+.callout .ic{color:var(--blue);margin-top:2px}
+.bar{height:8px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--violet));transform-origin:left;animation:grow .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleX(0)}}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+@keyframes slide{from{opacity:0;transform:translateX(14px)}}
+.enter{animation:slide .3s ease both}
+.page>*{animation:rise .35s ease both}
+.h-page{font-size:clamp(1.7rem,3.2vw,2.3rem);margin-bottom:8px}
+.sec{margin-top:40px}
+.sec>h2{font-size:1.25rem;margin-bottom:14px}
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:
+ radial-gradient(900px 420px at 85% -10%,color-mix(in srgb,var(--blue) 14%,transparent),transparent 70%),
+ radial-gradient(600px 360px at 10% 110%,color-mix(in srgb,var(--violet) 10%,transparent),transparent 70%),var(--bg)}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.45;mask-image:linear-gradient(180deg,#000,transparent 80%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 80%)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);gap:48px;align-items:center;padding-block:72px 80px}
+.hero h1{font-size:clamp(2.3rem,5vw,3.7rem);font-weight:800;letter-spacing:-.035em;line-height:1.04}
+.hero h1 em{font-style:normal;color:var(--blue)}
+.hero .lead{font-size:1.1rem;color:var(--ink2);margin-top:20px;max-width:34em}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.proof{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;color:var(--ink2);font-size:13px}
+.proof span{display:inline-flex;gap:6px;align-items:center}
+.proof .ic{width:15px;height:15px;color:var(--good)}
+.win{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden}
+.win-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--surface2)}
+.win-bar i{width:9px;height:9px;border-radius:50%;background:var(--line);display:block}
+.win-bar b{margin-left:8px;font:600 12px var(--body);color:var(--ink3)}
+.win-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;padding:14px}
+.mini-rec{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;font-weight:600}
+.mini-rec:last-child{border:0}
+.mini-rec span:last-child{color:var(--blue);font-variant-numeric:tabular-nums}
+/* sections on landing */
+.band{padding-block:72px}
+.band.alt{background:var(--surface);border-block:1px solid var(--line)}
+.band h2{font-size:clamp(1.6rem,3vw,2.2rem);max-width:20em}
+.band .sub{color:var(--ink2);margin-top:10px;max-width:38em}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:36px}
+.step{padding:24px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg)}
+.step .n{font:800 13px var(--head);color:var(--blue);background:var(--blue-soft);width:28px;height:28px;border-radius:8px;display:grid;place-items:center;margin-bottom:16px}
+.step h3{font-size:1.05rem;margin-bottom:6px}
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:32px}
+.cat{display:flex;gap:12px;align-items:center;padding:14px 16px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);transition:.15s}
+.cat:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:var(--shadow)}
+.cat .tile{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--blue-soft);color:var(--blue);flex:none}
+.cat b{display:block;font-size:14px}
+.cat small{color:var(--ink3);font-size:12px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px;align-items:center}
+.ticks{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:12px}
+.ticks li{display:flex;gap:10px;color:var(--ink2)}
+.ticks .ic{color:var(--good);margin-top:3px}
+.cta-final{margin:0 auto;text-align:center;padding:56px 24px;border-radius:18px;background:linear-gradient(135deg,#1B2F7A,#3B2C98);color:#fff}
+.cta-final h2{color:#fff;margin:0 auto}
+.cta-final p{color:#C9D2F5;margin:12px auto 24px;max-width:34em}
+.cta-final .btn-primary{background:#fff;color:#1B2F7A;box-shadow:none}
+.foot{border-top:1px solid var(--line);padding-block:40px 28px;margin-top:0;color:var(--ink2);font-size:13.5px}
+.foot .cols{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:32px}
+.foot h4{font:600 12px var(--body);text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:10px}
+.foot a{display:block;padding:3px 0}.foot a:hover{color:var(--blue)}
+/* assessment */
+.q-shell{max-width:720px;margin:0 auto}
+.prog{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.prog .bar{flex:1}
+.q-card{padding:30px}
+.q-card h2{font-size:clamp(1.25rem,2.4vw,1.6rem);margin:12px 0 6px}
+.opts{display:grid;gap:10px;margin-top:22px}
+.opt{display:flex;gap:14px;align-items:center;text-align:left;width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);transition:.15s}
+.opt:hover{border-color:color-mix(in srgb,var(--blue) 55%,var(--line));background:var(--surface2)}
+.opt .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center;transition:.15s}
+.opt.sel{border-color:var(--blue);background:var(--blue-soft)}
+.opt.sel .dot{border-color:var(--blue);background:var(--blue)}
+.opt.sel .dot::after{content:"";width:7px;height:7px;border-radius:50%;background:#fff}
+.likert{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:24px}
+.likert button{padding:18px 0;border:1px solid var(--line);border-radius:10px;background:var(--surface);font:700 18px var(--head);transition:.15s}
+.likert button:hover{border-color:var(--blue)}
+.likert button.sel{background:var(--blue);border-color:var(--blue);color:#fff}
+.scale-l{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--ink3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+/* results */
+.trait-row{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) 38px;gap:12px;align-items:center;padding:8px 0}
+.trait-row b{font-size:13.5px;font-weight:600}
+.trait-row .v{font:700 14px var(--head);text-align:right;font-variant-numeric:tabular-nums}
+.rec{padding:0;overflow:hidden}
+.rec-top{display:flex;gap:16px;padding:20px 22px;align-items:flex-start}
+.rank{font:800 13px var(--head);width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--surface2);color:var(--ink2);flex:none}
+.rec-main{flex:1;min-width:0}
+.rec-main h3{font-size:1.1rem}
+.score{text-align:right;flex:none}
+.score b{display:block;font:800 22px var(--head);color:var(--blue);font-variant-numeric:tabular-nums}
+.band-l{font-size:11.5px;font-weight:600;color:var(--ink3)}
+details.why{border-top:1px solid var(--line)}
+details.why summary{list-style:none;cursor:pointer;padding:12px 22px;font-weight:600;font-size:13.5px;color:var(--blue);display:flex;align-items:center;gap:8px}
+details.why summary::-webkit-details-marker{display:none}
+details.why[open] summary .ic{transform:rotate(90deg)}
+details.why summary .ic{transition:transform .2s}
+.why-body{padding:2px 22px 22px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.why-body h4{font:600 12px var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);margin-bottom:8px}
+.why-body ul{margin:0;padding-left:18px;color:var(--ink2);display:grid;gap:6px;font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+/* explorer */
+.filters{padding:18px;display:grid;gap:14px}
+.search{position:relative}
+.search .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink3)}
+input[type=text],input[type=search],select,textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 14px;width:100%}
+.search input{padding-left:38px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--blue);outline-offset:-1px;border-color:transparent}
+.lbl{font:600 12px var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);margin-bottom:8px;display:block}
+.ccard{position:relative;padding:20px;display:flex;flex-direction:column;gap:12px;transition:.18s}
+.ccard:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--blue) 40%,var(--line))}
+.ccard .a{position:absolute;inset:0;border-radius:var(--r)}
+.ccard .save{position:relative;z-index:2}
+.tile{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--blue-soft);color:var(--blue);flex:none}
+.ccard h3{font-size:1.05rem}
+.ccard p{color:var(--ink2);font-size:14px;flex:1}
+.match-b{font:700 12px var(--head);color:var(--good);background:var(--good-soft);padding:3px 8px;border-radius:6px}
+/* detail */
+.detail{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start;margin-top:26px}
+.panel{padding:24px}
+.panel+.panel{margin-top:16px}
+.panel h2{font-size:1.1rem;margin-bottom:12px}
+.panel ul{margin:0;padding-left:18px;display:grid;gap:7px;color:var(--ink2)}
+.prog-list{list-style:none!important;padding:0!important;display:grid;gap:0!important}
+.prog-list li{display:flex;gap:14px;align-items:flex-start;padding:0 0 18px;position:relative;color:var(--ink)}
+.prog-list li::before{content:"";position:absolute;left:11px;top:24px;bottom:0;width:2px;background:var(--line)}
+.prog-list li:last-child::before{display:none}
+.prog-list .nn{width:24px;height:24px;border-radius:50%;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font:700 11px var(--head);flex:none}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pc h3{font-size:.95rem;display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.fact{padding:8px 0;border-bottom:1px solid var(--line)}
+.fact:last-child{border:0}
+.fact .lbl{margin-bottom:4px}
+.link{color:var(--blue);font-weight:500}.link:hover{text-decoration:underline}
+/* advisor */
+.adv{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+.chat{display:flex;flex-direction:column;height:min(640px,calc(100vh - 220px));min-height:460px}
+.chat-log{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:14px}
+.msg{max-width:84%;padding:12px 15px;border-radius:14px;font-size:14.5px;line-height:1.6;animation:rise .25s ease both}
+.msg p+p,.msg p+ul,.msg ul+p{margin-top:8px}
+.msg ul{margin:0;padding-left:18px;display:grid;gap:3px}
+.msg.u{align-self:flex-end;background:var(--blue);color:#fff;border-bottom-right-radius:4px}
+.msg.a{align-self:flex-start;background:var(--surface2);border-bottom-left-radius:4px}
+.typing{display:inline-flex;gap:4px;padding:4px 0}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--ink3);animation:bl 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bl{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+.chat-in{display:flex;gap:10px;padding:14px;border-top:1px solid var(--line)}
+.chat-in input{flex:1}
+.sugg{display:grid;gap:8px}
+.sugg button{text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:13.5px;color:var(--ink2);transition:.15s}
+.sugg button:hover{border-color:var(--blue);color:var(--blue)}
+/* roadmap */
+.ring{position:relative;width:96px;height:96px;flex:none}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font:800 20px var(--head)}
+.stage{padding:0;overflow:hidden}
+.stage+.stage{margin-top:12px}
+.stage-h{display:flex;align-items:center;gap:14px;padding:16px 20px}
+.stage-h .nn{width:30px;height:30px;border-radius:9px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font:800 13px var(--head);flex:none}
+.stage-h.done .nn{background:var(--good-soft);color:var(--good)}
+.tasks{border-top:1px solid var(--line);padding:6px 20px 10px}
+.task{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:none;border:0;padding:10px 0;font-size:14.5px}
+.task .box{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);flex:none;margin-top:1px;display:grid;place-items:center;transition:.15s;color:#fff}
+.task .box .ic{width:13px;height:13px;stroke-width:3;opacity:0}
+.task.on .box{background:var(--good);border-color:var(--good)}
+.task.on .box .ic{opacity:1}
+.task.on span{color:var(--ink3);text-decoration:line-through}
+/* dashboard */
+.dash{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px;margin-top:24px}
+.c5{grid-column:span 5}.c7{grid-column:span 7}.c4{grid-column:span 4}.c8{grid-column:span 8}.c6{grid-column:span 6}.c12{grid-column:span 12}
+.dash h3{font-size:1rem;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.li{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.li:last-child{border:0}
+.li .grow{flex:1;min-width:0}
+.li b{display:block;font-size:14px}
+.empty{padding:22px;text-align:center;color:var(--ink2);border:1px dashed var(--line);border-radius:var(--r);font-size:14px}
+.modal-bg{position:fixed;inset:0;background:rgba(8,14,34,.5);display:grid;place-items:center;padding:20px;z-index:80;animation:rise .2s ease both}
+.modal{max-width:440px;width:100%;padding:28px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:500;z-index:90;box-shadow:var(--shadow-lg);animation:rise .2s ease both}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:980px){
+  .hero .wrap,.split{grid-template-columns:minmax(0,1fr);gap:36px}
+  .hero .wrap{padding-block:48px 56px}
+  .cats,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .detail,.adv{grid-template-columns:minmax(0,1fr)}
+  .c5,.c7,.c4,.c8,.c6{grid-column:span 12}
+  .nav{display:none}.hdr-cta{display:none}.burger{display:grid}
+  .hdr.open .wrap{flex-wrap:wrap;height:auto;row-gap:0;padding-bottom:16px}
+  .hdr.open .logo,.hdr.open .burger{height:64px}
+  .hdr.open .nav{display:flex;order:3;width:100%;flex-direction:column;margin:0}
+  .hdr.open .hdr-cta{display:flex;order:4;width:100%;margin:10px 0 0}
+}
+@media (max-width:620px){
+  .steps,.g2,.g3,.pc,.why-body,.foot .cols{grid-template-columns:minmax(0,1fr)}
+  .cats{grid-template-columns:minmax(0,1fr)}
+  .win-body{grid-template-columns:minmax(0,1fr)}
+  .rec-top{flex-wrap:wrap}.score{text-align:left;order:3;width:100%}
+  .trait-row{grid-template-columns:minmax(0,110px) minmax(0,1fr) 34px}
+  .q-card{padding:20px}
+  .msg{max-width:94%}
+  .likert button{padding:14px 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<div id="app"></div>
+<div id="modal"></div>
+<div id="toast-host"></div>
+
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script>
+/* ===================================================================
+   Career Navigator AI, single-file MVP prototype.
+   Sections: i18n · data (traits, questions, careers) · scoring · store ·
+   advisor service · roadmap generator · views · router/events.
+   Each section maps to a module in a React + TypeScript port.
+   =================================================================== */
+
+/* ---------- i18n: English now; add ru / kk dictionaries later ---------- */
+const I18N = { en: {} /* ru: {"Discover Careers":"..."}, kk: {...} */ };
+let LANG = 'en';
+const t = s => (I18N[LANG] && I18N[LANG][s]) || s;
+
+/* ---------- helpers ---------- */
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ico = (n, c) => `<i data-lucide="${n}" class="ic ${c || ''}"></i>`;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const $ = s => document.querySelector(s);
+
+/* ---------- traits ---------- */
+const TK = 'atclmpre';
+const TRAITS = [
+  { k:'a', name:'Analytical thinking', short:'Analytical', d:'Breaking problems into parts, working with logic, numbers and evidence.' },
+  { k:'t', name:'Technical interests', short:'Technical', d:'Curiosity about how machines, software and systems are built.' },
+  { k:'c', name:'Creativity', short:'Creative', d:'Generating original ideas, shaping how things look, sound and feel.' },
+  { k:'l', name:'Leadership', short:'Leadership', d:'Guiding groups, making calls, taking responsibility for outcomes.' },
+  { k:'m', name:'Communication', short:'Communication', d:'Explaining, persuading, listening and working closely with people.' },
+  { k:'p', name:'Practical problem-solving', short:'Practical', d:'Fixing, building and testing things in the real world.' },
+  { k:'r', name:'Research interests', short:'Research', d:'Asking open questions, investigating, wanting to know why.' },
+  { k:'e', name:'Entrepreneurial interests', short:'Entrepreneurial', d:'Spotting opportunities, taking initiative, building something of your own.' }
+];
+
+/* ---------- assessment questions (18) ----------
+   likert: w = trait weights.  choice / scenario: each option has s = trait points (0-3). */
+const QS = [
+  { id:'q1', type:'likert', text:'I enjoy working through a hard puzzle or logic problem for an hour or more.', w:{a:2,p:1} },
+  { id:'q2', type:'choice', text:'Which weekend project sounds most appealing?', o:[
+    ['Build an app or a small robot',{t:3,p:1}],['Design a poster or edit a short film',{c:3}],['Organise a charity event for your school',{l:3,m:1}],
+    ['Run a small online shop',{e:3,m:1}],['Analyse a public dataset about your city',{a:2,r:2}]] },
+  { id:'q3', type:'likert', text:'I would rather understand why something works than just learn how to use it.', w:{r:2,a:1} },
+  { id:'q4', type:'scenario', text:'Your team project is behind schedule and two members disagree about the plan. What do you do first?', o:[
+    ['Call a short meeting and agree on priorities',{l:3,m:1}],['Quietly fix the broken part yourself',{p:2,t:1}],
+    ['Collect data on what is slowing everyone down',{a:3}],['Propose a completely different, more creative approach',{c:2,e:1}]] },
+  { id:'q5', type:'choice', text:'Which school subject do you lose track of time in?', o:[
+    ['Mathematics or physics',{a:3,r:1}],['Biology or chemistry',{r:3,p:1}],['Art, design or media',{c:3}],
+    ['Languages, history or debate',{m:3,l:1}],['Computer science',{t:3,a:1}],['Economics or business studies',{e:2,a:1,l:1}]] },
+  { id:'q6', type:'likert', text:'I like making things look, sound or feel better than they did before.', w:{c:3} },
+  { id:'q7', type:'scenario', text:'A local café asks for help attracting more customers on a tiny budget. Where do you start?', o:[
+    ['Study when and what customers buy',{a:3}],['Create a memorable look, menu and social posts',{c:3,m:1}],
+    ['Pitch a loyalty scheme or weekly event, then run it',{e:3,l:1}],['Build a simple website for online orders',{t:3}]] },
+  { id:'q8', type:'likert', text:"I'm comfortable speaking up and persuading a group to follow a plan.", w:{l:2,m:1} },
+  { id:'q9', type:'choice', text:'Where would you most like to work?', o:[
+    ['A lab or research institute',{r:3}],['A studio or open creative space',{c:2,m:1}],['A busy office with many colleagues',{m:2,l:1}],
+    ['A workshop, hospital ward or building site',{p:3,t:1}],['Remote and flexible, with my own schedule',{t:1,e:1,a:1}]] },
+  { id:'q10', type:'likert', text:'Spreadsheets, charts and patterns in numbers are interesting to me.', w:{a:2,r:1} },
+  { id:'q11', type:'scenario', text:'In a science project you get a result that contradicts the textbook. What do you do?', o:[
+    ['Repeat the experiment carefully to check it',{r:3,p:1}],['Look up related studies to understand the gap',{r:2,a:2}],
+    ['Present it to the class and discuss what it means',{m:3}],['Ask whether it could become something useful',{e:2,t:1}]] },
+  { id:'q12', type:'choice', text:'How do you prefer to work on a long task?', o:[
+    ['Alone, with deep focus',{r:2,a:1,t:1}],['In a small team of two or three',{m:2,c:1}],
+    ['Leading a larger team',{l:3}],['A mix, solo thinking and group check-ins',{p:1,m:1}]] },
+  { id:'q13', type:'likert', text:'I get restless when I am not building, fixing or testing something with my hands or tools.', w:{p:2,t:1} },
+  { id:'q14', type:'scenario', text:'A friend is stressed about exams and asks for help. What feels most natural?', o:[
+    ['Listen first, then help them make a plan',{m:3}],['Build them a simple revision tracker',{t:2,p:1}],
+    ['Teach them the topics they find hardest',{m:2,l:1,r:1}],['Work out why they struggle to focus',{r:2,a:1}]] },
+  { id:'q15', type:'choice', text:'Which problem would you most like to solve?', o:[
+    ['Why a complex system keeps breaking',{t:2,p:2}],['How to help a person feel better',{m:2,p:1,r:1}],
+    ['How to make something beautiful and easy to use',{c:3}],['How to grow a small business',{e:3}],['How to prove or discover something new',{r:3,a:1}]] },
+  { id:'q16', type:'likert', text:'Starting my own project, even if it might fail, appeals to me more than a stable, predictable path.', w:{e:3} },
+  { id:'q17', type:'choice', text:'Which statement sounds most like you?', o:[
+    ['I prefer practical, hands-on activities.',{p:3}],['I prefer theory, models and ideas.',{r:2,a:2}],
+    ['I like turning ideas into working things.',{t:1,p:1,c:1,e:1}],['I prefer activities that involve other people.',{m:2,l:1}]] },
+  { id:'q18', type:'scenario', text:'You can pick any final-year project you like. You choose...', o:[
+    ['A product that solves a real problem for real users',{e:2,c:1,t:1}],['A deep analysis of an open question',{r:3,a:1}],
+    ['A physical prototype you can test',{p:3,t:1}],['A campaign or event to change opinions',{l:2,m:2}]] }
+];
+const QTYPE = { likert:'Rate how true this is for you', choice:'Choose the one that fits best', scenario:'Pick what you would actually do' };
+
+/* ---------- careers (20) ----------
+   w = importance of each trait [a,t,c,l,m,p,r,e], 0-3. Outlook text is deliberately qualitative: no salaries or demand figures. */
+const EDU = { bachelor:"Bachelor's degree", professional:'Professional degree or licence', graduate:"Master's or doctorate typical", flex:'Flexible paths' };
+const CATS = [['Technology','cpu'],['Engineering','cog'],['Design','palette'],['Healthcare','heart-pulse'],['Science','flask-conical'],['Finance','landmark'],['Economics','trending-up'],['Law','scale'],['Management','users'],['Business','briefcase'],['Entrepreneurship','rocket']];
+const CATICON = Object.fromEntries(CATS);
+const SKILLS = ['Programming','Mathematics','Data Analysis','Problem Solving','Communication','Creativity','Leadership','Research','Design Thinking','Negotiation','Critical Thinking','Project Management','Empathy','Writing','Systems Thinking','Financial Literacy'];
+
+const CAREERS = [
+{id:'software-engineer',title:'Software Engineer',cat:'Technology',w:[3,3,1,0,1,3,1,1],edu:'flex',
+ short:'Designs, builds and maintains the software behind apps, websites and devices.',
+ overview:'Software engineers turn problems into working programs. They write and review code, design how systems fit together and keep products reliable as they grow. The work ranges from mobile apps to cloud services to embedded software.',
+ resp:['Write, test and review code','Break features into small, deliverable tasks','Find and fix bugs in live systems','Work with designers, product managers and other engineers'],
+ skills:['Programming','Problem Solving','Systems Thinking','Critical Thinking','Communication'],
+ subjects:['Mathematics','Computer Science','Physics','English'],majors:['Computer Science','Software Engineering','Information Systems'],
+ ind:['Consumer apps','Banking and fintech','Healthcare technology','Games','Public sector'],
+ eduNote:'Most people hold a computer science or related degree, but bootcamps and self-taught portfolios are also common routes.',
+ prog:['Junior developer','Software engineer','Senior engineer','Tech lead, architect or engineering manager'],
+ pros:['Many ways to start, including self-study','Portable skills across industries','Visible results from your own work'],
+ cons:['Constant learning as tools change','Debugging can be slow and frustrating','Long stretches of screen-based work'],
+ outlook:'Software is used in nearly every sector, so skills carry over widely. Tools and tasks change quickly, including through AI-assisted coding, so adaptability matters more than any single language.',
+ res:[['CS50 by Harvard','https://cs50.harvard.edu'],['freeCodeCamp','https://www.freecodecamp.org'],['MIT OpenCourseWare','https://ocw.mit.edu']],
+ proj:['Build a to-do app and publish it online','Recreate a small game such as Snake or Tetris'],rel:['data-scientist','cybersecurity-analyst','product-manager']},
+{id:'data-scientist',title:'Data Scientist',cat:'Technology',w:[3,3,1,0,1,1,3,1],edu:'bachelor',
+ short:'Finds patterns in data and builds models that help organisations make decisions.',
+ overview:'Data scientists collect, clean and analyse data to answer questions and make predictions. They combine statistics, programming and domain knowledge, and explain findings to people who are not technical.',
+ resp:['Clean and explore messy datasets','Build statistical or machine-learning models','Design experiments and measure results','Present findings with charts and plain language'],
+ skills:['Data Analysis','Mathematics','Programming','Research','Communication'],
+ subjects:['Mathematics','Statistics','Computer Science','Economics'],majors:['Statistics','Data Science','Applied Mathematics','Computer Science'],
+ ind:['Technology','Healthcare and biotech','Finance','Retail','Sports analytics'],
+ eduNote:'A bachelor\'s degree in a quantitative field is the usual start. A master\'s degree is common for model-heavy roles.',
+ prog:['Data analyst','Data scientist','Senior or lead data scientist','Head of data or machine-learning specialist'],
+ pros:['Answers real questions with evidence','Strong overlap with research thinking','Applies to almost any industry'],
+ cons:['A lot of time goes into cleaning data','Results can be ignored or misunderstood','Needs strong maths and coding together'],
+ outlook:'Organisations in many fields collect data and need people to interpret it. The role is changing as automated tools take over routine analysis, which raises the value of problem framing and communication.',
+ res:[['Kaggle Learn','https://www.kaggle.com/learn'],['Khan Academy Statistics','https://www.khanacademy.org'],['Coursera','https://www.coursera.org']],
+ proj:['Analyse a public dataset on a topic you care about','Make a chart-based story from your school or city data'],rel:['software-engineer','economist','financial-analyst']},
+{id:'cybersecurity-analyst',title:'Cybersecurity Analyst',cat:'Technology',w:[3,3,0,0,1,3,2,0],edu:'bachelor',
+ short:'Protects systems and data by finding weaknesses and responding to attacks.',
+ overview:'Cybersecurity analysts monitor networks, investigate suspicious activity and help organisations fix weaknesses before attackers use them. The work mixes detective-style investigation with technical knowledge.',
+ resp:['Monitor systems for unusual activity','Investigate and respond to incidents','Test systems for weaknesses with permission','Write clear reports and security guidance'],
+ skills:['Problem Solving','Critical Thinking','Programming','Systems Thinking','Writing'],
+ subjects:['Computer Science','Mathematics','Physics','English'],majors:['Cybersecurity','Computer Science','Information Technology'],
+ ind:['Banking','Government','Telecommunications','Healthcare','Consulting'],
+ eduNote:'A computer-related degree is common. Recognised security certifications and hands-on practice also carry weight.',
+ prog:['Security analyst','Security engineer or penetration tester','Senior specialist','Security architect or chief information security officer'],
+ pros:['Varied, puzzle-like problems','Clear sense of purpose protecting people','Many specialisations to choose from'],
+ cons:['Pressure during live incidents','Attackers keep changing tactics','Requires strict ethics and trust'],
+ outlook:'Digital systems keep spreading, and so do the risks. Employers in many sectors hire for security tasks, though competition for entry-level roles varies by region.',
+ res:[['TryHackMe','https://tryhackme.com'],['CS50 Cybersecurity','https://cs50.harvard.edu'],['edX','https://www.edx.org']],
+ proj:['Set up a home lab and practise on legal training platforms','Write a short guide on safe passwords for your family'],rel:['software-engineer','electrical-engineer','lawyer']},
+{id:'ux-designer',title:'UX/UI Designer',cat:'Design',w:[1,2,3,1,3,2,2,1],edu:'flex',
+ short:'Shapes how digital products look and work so people can use them easily.',
+ overview:'UX/UI designers study how people use products, then design screens and flows that make tasks simple. They sketch, prototype, test with real users and work closely with developers.',
+ resp:['Interview and observe users','Sketch flows and build interactive prototypes','Design interface layouts and visual systems','Test designs and improve them'],
+ skills:['Design Thinking','Creativity','Empathy','Communication','Research'],
+ subjects:['Art and Design','Psychology','Computer Science','English'],majors:['Interaction Design','Graphic Design','Human-Computer Interaction','Psychology'],
+ ind:['Software','E-commerce','Banking apps','Education technology','Healthcare'],
+ eduNote:'Design degrees help, but employers often care most about a portfolio that shows your process.',
+ prog:['Junior designer','UX/UI designer','Senior designer','Design lead or head of design'],
+ pros:['Mixes creativity with evidence','Portfolio matters more than a single diploma','Direct impact on everyday products'],
+ cons:['Feedback and subjective opinions are constant','Needs to defend design choices to others','Portfolio takes real effort to build'],
+ outlook:'Digital products need usable design, but tools and expectations shift quickly. Designers who can research and explain their decisions tend to stand out.',
+ res:[['Figma Learn','https://help.figma.com'],['Coursera','https://www.coursera.org'],['Khan Academy','https://www.khanacademy.org']],
+ proj:['Redesign an app you find confusing and explain why','Test a prototype with five classmates and write what you learned'],rel:['product-manager','industrial-designer','marketing-strategist']},
+{id:'mechanical-engineer',title:'Mechanical Engineer',cat:'Engineering',w:[2,3,2,0,1,3,2,1],edu:'bachelor',
+ short:'Designs and improves machines, vehicles, tools and energy systems.',
+ overview:'Mechanical engineers design and test physical things that move or transfer energy, from medical devices to engines to production lines. They use maths, physics and computer-aided design, and often build prototypes.',
+ resp:['Model parts and systems in CAD software','Calculate loads, heat and motion','Build and test prototypes','Improve manufacturing processes'],
+ skills:['Mathematics','Problem Solving','Systems Thinking','Design Thinking','Project Management'],
+ subjects:['Physics','Mathematics','Chemistry','Technical Drawing'],majors:['Mechanical Engineering','Mechatronics','Aerospace Engineering'],
+ ind:['Automotive','Aerospace','Energy','Manufacturing','Medical devices'],
+ eduNote:'A bachelor\'s degree in engineering is the standard entry point. Some countries require professional registration later.',
+ prog:['Graduate engineer','Design or project engineer','Senior engineer','Engineering manager or technical specialist'],
+ pros:['See and hold what you design','Wide range of industries','Strong link between theory and practice'],
+ cons:['Heavy maths and physics in university','Projects can run for years','Some roles involve factory or site work'],
+ outlook:'Physical products, energy and transport will keep needing design and maintenance. Fields like robotics, electrification and sustainable materials are changing the work.',
+ res:[['MIT OpenCourseWare','https://ocw.mit.edu'],['Instructables','https://www.instructables.com'],['Khan Academy Physics','https://www.khanacademy.org']],
+ proj:['Build a small mechanism from cardboard or 3D-printed parts','Take apart a broken appliance and map how it works'],rel:['electrical-engineer','industrial-designer','civil-engineer']},
+{id:'civil-engineer',title:'Civil Engineer',cat:'Engineering',w:[2,2,1,1,2,3,1,0],edu:'professional',
+ short:'Plans and oversees bridges, roads, water systems and buildings.',
+ overview:'Civil engineers design and manage the structures communities rely on. They balance safety, cost, materials and environmental impact, and coordinate with architects, contractors and public authorities.',
+ resp:['Survey sites and analyse ground conditions','Design structures and drainage systems','Check plans against safety standards','Supervise construction and solve site problems'],
+ skills:['Mathematics','Project Management','Problem Solving','Communication','Systems Thinking'],
+ subjects:['Mathematics','Physics','Geography','Technical Drawing'],majors:['Civil Engineering','Structural Engineering','Environmental Engineering'],
+ ind:['Construction','Transport','Water and utilities','Government','Consulting'],
+ eduNote:'A bachelor\'s degree is the base. Many countries require supervised experience and a licence before you can sign off designs.',
+ prog:['Graduate engineer','Site or design engineer','Chartered or licensed engineer','Project director or consultant'],
+ pros:['Visible, lasting work in your community','Mix of office design and site work','Clear professional standards'],
+ cons:['Licensing takes time','Weather, deadlines and budgets add pressure','Responsibility for safety is serious'],
+ outlook:'Ageing infrastructure, climate adaptation and growing cities all need engineering skills. Demand varies strongly by country and public funding.',
+ res:[['MIT OpenCourseWare','https://ocw.mit.edu'],['Khan Academy','https://www.khanacademy.org'],['Engineering for Kids guides','https://www.instructables.com']],
+ proj:['Build and load-test a model bridge from spaghetti','Map flood or traffic problems around your school'],rel:['architect','mechanical-engineer','project-manager']},
+{id:'electrical-engineer',title:'Electrical & Electronics Engineer',cat:'Engineering',w:[3,3,1,0,0,3,2,0],edu:'bachelor',
+ short:'Designs circuits, power systems and the electronics inside modern devices.',
+ overview:'Electrical and electronics engineers work with circuits, sensors, communication systems and power networks. Some design chips and gadgets; others work on how electricity is generated and distributed.',
+ resp:['Design and simulate circuits','Test and debug hardware','Write control or embedded software','Ensure products meet safety standards'],
+ skills:['Mathematics','Problem Solving','Programming','Systems Thinking','Critical Thinking'],
+ subjects:['Physics','Mathematics','Computer Science','Chemistry'],majors:['Electrical Engineering','Electronics Engineering','Computer Engineering'],
+ ind:['Energy and power','Consumer electronics','Telecommunications','Automotive','Robotics'],
+ eduNote:'A bachelor\'s degree in electrical, electronic or computer engineering is the usual route.',
+ prog:['Graduate engineer','Hardware or power engineer','Senior engineer','Technical lead or systems architect'],
+ pros:['Underpins nearly all modern technology','Blend of theory and hands-on testing','Many specialisations'],
+ cons:['Abstract maths in the early years','Hardware bugs can be hard to trace','Long development cycles'],
+ outlook:'Electrification, renewable energy, connected devices and robotics all depend on this field. Specific demand depends on region and industry investment.',
+ res:[['Arduino Project Hub','https://projecthub.arduino.cc'],['MIT OpenCourseWare','https://ocw.mit.edu'],['Khan Academy','https://www.khanacademy.org']],
+ proj:['Build a blinking LED and sensor circuit with a starter kit','Program a microcontroller to read temperature'],rel:['mechanical-engineer','software-engineer','cybersecurity-analyst']},
+{id:'physician',title:'Physician (Doctor)',cat:'Healthcare',w:[2,1,0,1,3,3,2,0],edu:'professional',
+ short:'Diagnoses and treats illness, and helps people stay healthy.',
+ overview:'Physicians assess symptoms, order tests, decide on treatment and guide patients through care. They may work in hospitals, clinics or communities, and specialise in areas such as surgery, paediatrics or psychiatry.',
+ resp:['Listen to patients and examine them','Order and interpret tests','Plan and review treatment','Work with nurses, specialists and families'],
+ skills:['Empathy','Communication','Critical Thinking','Problem Solving','Research'],
+ subjects:['Biology','Chemistry','Physics','Mathematics'],majors:['Medicine','Biomedical Sciences','Public Health'],
+ ind:['Hospitals','Primary care','Public health','Medical research','Global health organisations'],
+ eduNote:'Requires a medical degree followed by supervised residency or specialty training. Length and entry routes differ widely between countries.',
+ prog:['Medical student','Junior doctor or resident','Specialist or general practitioner','Consultant, researcher or clinical leader'],
+ pros:['Direct, meaningful work with people','Many specialties to choose from','Strong sense of purpose'],
+ cons:['Very long training','Emotionally and physically demanding','Irregular hours, especially early on'],
+ outlook:'Health needs continue as populations age, but entry is competitive and training places are limited. Technology is changing diagnosis and record-keeping.',
+ res:[['Khan Academy Health & Medicine','https://www.khanacademy.org'],['Coursera health courses','https://www.coursera.org'],['edX','https://www.edx.org']],
+ proj:['Volunteer at a care home or first-aid event','Write a short explainer on how a common illness is treated'],rel:['psychologist','research-scientist','data-scientist']},
+{id:'psychologist',title:'Psychologist',cat:'Healthcare',w:[2,0,1,0,3,1,3,0],edu:'graduate',
+ short:'Studies behaviour and mental processes and helps people through evidence-based support.',
+ overview:'Psychologists study how people think, feel and behave. Clinical psychologists help people with mental health challenges; others work in schools, organisations or research. Listening, ethics and careful reasoning sit at the centre of the job.',
+ resp:['Assess needs through interviews and tests','Plan and deliver therapy or programmes','Review research to guide practice','Keep careful, confidential records'],
+ skills:['Empathy','Research','Communication','Critical Thinking','Writing'],
+ subjects:['Biology','Psychology','Mathematics','English'],majors:['Psychology','Neuroscience','Counselling'],
+ ind:['Healthcare','Education','Workplace and HR','Research','Sport'],
+ eduNote:'A bachelor\'s degree in psychology is followed by a master\'s or doctoral programme and supervised practice. Rules for practising differ by country.',
+ prog:['Psychology graduate','Assistant or trainee psychologist','Licensed psychologist','Specialist, supervisor or researcher'],
+ pros:['Helps people in a concrete way','Mix of science and human contact','Many routes: clinical, educational, research'],
+ cons:['Long training before independent practice','Emotionally heavy work','Boundaries and ethics need constant care'],
+ outlook:'Awareness of mental health has grown in many places. Availability of jobs and funding depends on the health and education systems where you live.',
+ res:[['Khan Academy Psychology','https://www.khanacademy.org'],['American Psychological Association','https://www.apa.org'],['Coursera','https://www.coursera.org']],
+ proj:['Read one study summary a week and note its limits','Interview three people about how they manage stress'],rel:['physician','research-scientist','marketing-strategist']},
+{id:'research-scientist',title:'Research Scientist',cat:'Science',w:[3,2,1,0,1,1,3,0],edu:'graduate',
+ short:'Investigates open questions in fields like biology, chemistry, physics or climate.',
+ overview:'Research scientists design studies, run experiments or simulations, analyse results and publish findings. They work in universities, institutes or company labs, and often collaborate across countries.',
+ resp:['Form questions and design experiments','Collect and analyse data','Write papers and grant applications','Present findings at conferences'],
+ skills:['Research','Critical Thinking','Mathematics','Writing','Data Analysis'],
+ subjects:['Biology','Chemistry','Physics','Mathematics'],majors:['Biology','Chemistry','Physics','Environmental Science'],
+ ind:['Universities','Pharmaceuticals','Energy','Environmental agencies','Space and materials'],
+ eduNote:'Typically a bachelor\'s degree, then a master\'s and a doctorate in the chosen specialty.',
+ prog:['Research assistant','PhD researcher','Postdoctoral researcher','Group leader, professor or R&D lead'],
+ pros:['Chance to discover something new','Freedom to follow questions','International community'],
+ cons:['Long path with uncertain positions','Funding is competitive','Many experiments do not work'],
+ outlook:'Science funding and openings depend heavily on country and field. Skills in data, programming and communication keep doors open beyond academia.',
+ res:[['MIT OpenCourseWare','https://ocw.mit.edu'],['Khan Academy','https://www.khanacademy.org'],['Coursera','https://www.coursera.org']],
+ proj:['Run a controlled experiment for a school science fair','Replicate a simple published result and compare'],rel:['data-scientist','physician','economist']},
+{id:'financial-analyst',title:'Financial Analyst',cat:'Finance',w:[3,1,0,0,2,1,2,1],edu:'bachelor',
+ short:'Evaluates companies and investments using financial data and models.',
+ overview:'Financial analysts study financial statements, build forecasts and recommend how organisations or investors should use money. They turn numbers into a clear story for managers and clients.',
+ resp:['Build financial models in spreadsheets','Analyse company results and markets','Prepare reports and presentations','Support budgeting and investment decisions'],
+ skills:['Financial Literacy','Data Analysis','Mathematics','Communication','Critical Thinking'],
+ subjects:['Mathematics','Economics','Business Studies','English'],majors:['Finance','Accounting','Economics','Business Administration'],
+ ind:['Banking','Investment firms','Corporate finance','Consulting','Insurance'],
+ eduNote:'A bachelor\'s degree in finance, economics or a related field. Professional exams such as CFA or ACCA are common later steps.',
+ prog:['Analyst','Senior analyst','Associate or manager','Director, portfolio manager or CFO track'],
+ pros:['Clear skills that employers recognise','Strong analytical training','Pathways into many business roles'],
+ cons:['Deadline-driven periods','Work can be repetitive in early years','Markets are unpredictable'],
+ outlook:'Every organisation needs financial planning, but automation is taking over routine reporting. Judgement and communication become more important.',
+ res:[['Investopedia','https://www.investopedia.com'],['Khan Academy Finance','https://www.khanacademy.org'],['Coursera','https://www.coursera.org']],
+ proj:['Run a pretend investment portfolio for one term','Build a budget model for a school club in a spreadsheet'],rel:['economist','management-consultant','data-scientist']},
+{id:'economist',title:'Economist',cat:'Economics',w:[3,0,0,0,2,0,3,1],edu:'graduate',
+ short:'Studies how people, firms and governments use resources, and advises on policy.',
+ overview:'Economists use data and theory to understand topics such as prices, jobs, trade and growth. They work in government, banks, international organisations and research groups, often writing reports that shape decisions.',
+ resp:['Collect and analyse economic data','Build and test models','Write reports and policy briefs','Present recommendations to decision-makers'],
+ skills:['Data Analysis','Research','Mathematics','Writing','Critical Thinking'],
+ subjects:['Mathematics','Economics','History','English'],majors:['Economics','Econometrics','Public Policy'],
+ ind:['Government','Central banks','International organisations','Consulting','Think tanks'],
+ eduNote:'A bachelor\'s degree is the start; many research and policy roles expect a master\'s or doctorate.',
+ prog:['Research assistant or junior economist','Economist','Senior economist','Chief economist or policy director'],
+ pros:['Connects theory with real public issues','Strong quantitative toolbox','Respected analytical skills'],
+ cons:['Models simplify a messy world','Policy influence can be slow','Further study is common'],
+ outlook:'Questions about work, climate and technology keep raising the need for economic analysis. Job numbers depend on public budgets and markets.',
+ res:[['Marginal Revolution University','https://mru.org'],['Khan Academy Economics','https://www.khanacademy.org'],['MIT OpenCourseWare','https://ocw.mit.edu']],
+ proj:['Track a price, such as bread or bus fares, for two months','Write a one-page brief on a local policy question'],rel:['financial-analyst','data-scientist','management-consultant']},
+{id:'lawyer',title:'Lawyer',cat:'Law',w:[3,0,1,2,3,0,2,1],edu:'professional',
+ short:'Advises people and organisations on legal rights and represents them.',
+ overview:'Lawyers interpret laws and apply them to real situations. They draft contracts, advise clients, negotiate settlements and, in some roles, argue cases in court. Areas range from business and technology to human rights.',
+ resp:['Research laws and past cases','Draft contracts and legal documents','Advise clients on risks and options','Negotiate or represent clients in disputes'],
+ skills:['Writing','Critical Thinking','Negotiation','Communication','Research'],
+ subjects:['History','English','Languages','Social Studies'],majors:['Law','Political Science','International Relations'],
+ ind:['Law firms','Corporations','Government','NGOs','Technology companies'],
+ eduNote:'Requires a law degree and, in most countries, a qualifying exam and supervised training. Routes differ between legal systems.',
+ prog:['Law student or trainee','Junior lawyer','Senior associate or counsel','Partner, judge or general counsel'],
+ pros:['Intellectually demanding and varied','Can work on issues you care about','Strong writing and reasoning skills'],
+ cons:['Heavy reading and long hours','High-stakes responsibility','Entry can be competitive'],
+ outlook:'Laws touch every sector, and new areas such as data privacy and AI regulation keep appearing. Automation is changing routine document work.',
+ res:[['Khan Academy Civics','https://www.khanacademy.org'],['Coursera law courses','https://www.coursera.org'],['edX','https://www.edx.org']],
+ proj:['Join a debate or mock trial club','Summarise a famous court case in plain language'],rel:['management-consultant','economist','cybersecurity-analyst']},
+{id:'product-manager',title:'Product Manager',cat:'Management',w:[2,2,2,3,3,1,1,2],edu:'flex',
+ short:'Decides what to build and why, guiding a team from idea to launch.',
+ overview:'Product managers sit between users, business goals and engineering. They research needs, set priorities, write clear requirements and keep a team aligned on what success looks like.',
+ resp:['Talk to users and study usage data','Prioritise features and write requirements','Align designers, engineers and stakeholders','Track results after launch'],
+ skills:['Communication','Leadership','Critical Thinking','Data Analysis','Design Thinking'],
+ subjects:['Mathematics','Economics','Computer Science','English'],majors:['Business Administration','Computer Science','Information Systems','Economics'],
+ ind:['Software','Fintech','E-commerce','Healthcare technology','Media'],
+ eduNote:'There is no single route. People arrive from engineering, design, business or analytics, often after a few years of experience.',
+ prog:['Associate product manager','Product manager','Senior product manager','Director of product or founder'],
+ pros:['Wide view of how a product works','Strong people and strategy skills','Natural path towards leadership'],
+ cons:['Responsibility without direct authority','Trade-offs often disappoint someone','Hard to enter without prior experience'],
+ outlook:'Companies that build digital products rely on this role, but it is usually not an entry-level job. Experience in another role first often helps.',
+ res:[['Mind the Product','https://www.mindtheproduct.com'],['Coursera','https://www.coursera.org'],['Y Combinator Startup School','https://www.startupschool.org']],
+ proj:['Write a one-page plan to improve a school app or website','Run a survey to decide one feature for a club project'],rel:['software-engineer','ux-designer','founder']},
+{id:'project-manager',title:'Project Manager',cat:'Management',w:[1,1,0,3,3,3,0,1],edu:'bachelor',
+ short:'Plans, coordinates and delivers projects on time and within budget.',
+ overview:'Project managers turn goals into schedules, budgets and tasks, then keep people and resources moving. They work in construction, IT, events, healthcare and almost any field that runs projects.',
+ resp:['Define scope, timeline and budget','Assign tasks and track progress','Manage risks and changes','Report to sponsors and clients'],
+ skills:['Project Management','Leadership','Communication','Negotiation','Problem Solving'],
+ subjects:['Mathematics','English','Business Studies','Geography'],majors:['Business Administration','Management','Engineering','Construction Management'],
+ ind:['Construction','IT','Events','Healthcare','Manufacturing'],
+ eduNote:'A bachelor\'s degree in business, engineering or a related field is common. PMP or PRINCE2 certifications can help later.',
+ prog:['Project coordinator','Project manager','Senior project manager','Programme or portfolio manager'],
+ pros:['Transferable to nearly any industry','Visible ownership of results','Constant interaction with people'],
+ cons:['Responsible when things slip','Juggling many priorities','Conflicts between stakeholders'],
+ outlook:'Any organisation running complex work needs coordination, so the role exists in many sectors. Digital tools are automating some tracking tasks.',
+ res:[['Project Management Institute','https://www.pmi.org'],['Coursera','https://www.coursera.org'],['edX','https://www.edx.org']],
+ proj:['Plan and run a school event with a timeline and budget','Create a task board for a group assignment'],rel:['product-manager','civil-engineer','management-consultant']},
+{id:'founder',title:'Entrepreneur / Startup Founder',cat:'Entrepreneurship',w:[1,1,2,3,2,2,0,3],edu:'flex',
+ short:'Builds a new business around a problem worth solving.',
+ overview:'Founders spot a problem, test an idea with real customers, and build a team and product around it. The work changes weekly: selling, building, hiring, raising money and learning from mistakes.',
+ resp:['Talk to customers and test ideas quickly','Build or commission a first product','Sell, hire and manage money','Decide when to change direction'],
+ skills:['Leadership','Communication','Creativity','Financial Literacy','Problem Solving'],
+ subjects:['Business Studies','Economics','Mathematics','English'],majors:['Entrepreneurship','Business Administration','Any subject you know deeply'],
+ ind:['Technology','Retail and food','Creative services','Education','Any sector'],
+ eduNote:'No required degree. Many founders study something relevant, work first, or start small projects while studying.',
+ prog:['Side project or small venture','First product with paying customers','Growing company with a team','Established founder, investor or serial entrepreneur'],
+ pros:['Full ownership of your ideas','Very fast learning','Flexibility in what you build'],
+ cons:['Many ventures fail','Income can be unstable','Stress and long hours are common'],
+ outlook:'New ventures are started in every economy, but success rates are low and outcomes vary a lot. Building small experiments while studying lowers the risk.',
+ res:[['Y Combinator Startup School','https://www.startupschool.org'],['Coursera','https://www.coursera.org'],['HubSpot Academy','https://academy.hubspot.com']],
+ proj:['Sell a product or service to ten real customers','Write a one-page business plan and test it by asking people'],rel:['product-manager','marketing-strategist','management-consultant']},
+{id:'marketing-strategist',title:'Marketing Strategist',cat:'Business',w:[1,1,3,1,3,1,1,3],edu:'bachelor',
+ short:'Works out how to reach and persuade the right audience for a product or idea.',
+ overview:'Marketing strategists research audiences, shape a brand message and choose the channels to reach people. They combine creativity with data, from social media to campaigns and pricing.',
+ resp:['Research audiences and competitors','Plan campaigns and content','Track results with analytics','Work with designers, writers and sales teams'],
+ skills:['Communication','Creativity','Data Analysis','Writing','Design Thinking'],
+ subjects:['English','Business Studies','Art and Design','Psychology'],majors:['Marketing','Communications','Business Administration','Psychology'],
+ ind:['Consumer brands','Technology','Media','Nonprofits','Agencies'],
+ eduNote:'A bachelor\'s degree in marketing or communications is common, but a strong portfolio of real campaigns can open doors.',
+ prog:['Marketing assistant','Marketing specialist','Strategy or brand manager','Head of marketing or chief marketing officer'],
+ pros:['Blend of creativity and analysis','Visible, often fast results','Skills useful for your own ventures'],
+ cons:['Results are hard to prove','Trends and platforms keep changing','Pressure to hit targets'],
+ outlook:'Every organisation needs to reach people, but channels and tools change fast. Strong writing, analytics and judgement last longer than any platform.',
+ res:[['HubSpot Academy','https://academy.hubspot.com'],['Coursera','https://www.coursera.org'],['Khan Academy','https://www.khanacademy.org']],
+ proj:['Run a small social campaign for a school club and measure it','Write three versions of a headline and test which works best'],rel:['ux-designer','founder','product-manager']},
+{id:'management-consultant',title:'Management Consultant',cat:'Business',w:[3,0,1,2,3,1,1,2],edu:'bachelor',
+ short:'Helps organisations solve complex business problems and improve performance.',
+ overview:'Consultants join an organisation for a limited time to study a problem, analyse data and recommend changes. Projects range from entering a new market to restructuring operations.',
+ resp:['Define the problem with the client','Analyse data and interview staff','Build and present recommendations','Help teams put changes into practice'],
+ skills:['Critical Thinking','Communication','Data Analysis','Problem Solving','Leadership'],
+ subjects:['Mathematics','Economics','English','Business Studies'],majors:['Business Administration','Economics','Engineering','Finance'],
+ ind:['Consulting firms','Technology','Healthcare','Public sector','Energy'],
+ eduNote:'A bachelor\'s degree from a wide range of subjects is accepted, and an MBA is a common later step.',
+ prog:['Analyst','Consultant','Manager','Partner or executive in industry'],
+ pros:['Exposure to many industries quickly','Strong structured-thinking skills','Opens doors to leadership roles'],
+ cons:['Long hours and travel in many firms','Recommendations are not always adopted','Competitive entry'],
+ outlook:'Organisations keep seeking outside perspective on strategy and technology change, but consulting demand follows the economy and can shift.',
+ res:[['Coursera Business Foundations','https://www.coursera.org'],['edX','https://www.edx.org'],['Khan Academy','https://www.khanacademy.org']],
+ proj:['Analyse why a local business could grow and present a 5-slide plan','Practise breaking down a problem with a friend each week'],rel:['financial-analyst','product-manager','lawyer']},
+{id:'industrial-designer',title:'Industrial Designer',cat:'Design',w:[1,2,3,0,1,3,1,1],edu:'bachelor',
+ short:'Designs physical products so they look good, feel right and work well.',
+ overview:'Industrial designers shape everyday objects such as furniture, appliances, devices and tools. They sketch, model, prototype and work with engineers and manufacturers to make ideas real.',
+ resp:['Sketch and model concepts','Build physical prototypes','Study how people use products','Work with engineers on materials and production'],
+ skills:['Creativity','Design Thinking','Problem Solving','Empathy','Communication'],
+ subjects:['Art and Design','Physics','Mathematics','Technical Drawing'],majors:['Industrial Design','Product Design','Mechanical Engineering'],
+ ind:['Consumer goods','Furniture','Transport','Medical devices','Electronics'],
+ eduNote:'A bachelor\'s degree in industrial or product design, usually with a strong portfolio for admission and for job hunting.',
+ prog:['Junior designer','Product designer','Senior designer','Design director or studio founder'],
+ pros:['Create objects people use daily','Strong mix of art and engineering','Tangible results'],
+ cons:['Ideas often change in production','Portfolio is demanding','Costs and materials limit options'],
+ outlook:'Physical products still need design, and sustainability is changing materials and processes. Openings depend on manufacturing activity in your area.',
+ res:[['Instructables','https://www.instructables.com'],['Figma Learn','https://help.figma.com'],['Khan Academy Drawing','https://www.khanacademy.org']],
+ proj:['Redesign an everyday object, like a water bottle, with sketches and a mock-up','Interview three users about a product they dislike'],rel:['mechanical-engineer','architect','ux-designer']},
+{id:'architect',title:'Architect',cat:'Design',w:[1,2,3,1,2,3,1,1],edu:'professional',
+ short:'Designs buildings and spaces that are safe, useful and good to be in.',
+ overview:'Architects plan buildings from the first sketch to construction details. They balance form, function, regulations and budgets, and coordinate with engineers, clients and builders.',
+ resp:['Meet clients and understand their needs','Sketch concepts and develop drawings','Model designs in 3D software','Coordinate with engineers and contractors'],
+ skills:['Creativity','Design Thinking','Project Management','Communication','Problem Solving'],
+ subjects:['Art and Design','Mathematics','Physics','Geography'],majors:['Architecture','Urban Design','Landscape Architecture'],
+ ind:['Architecture firms','Construction','Urban planning','Real estate','Government'],
+ eduNote:'Requires an accredited architecture degree plus supervised practice and a licensing exam in most countries.',
+ prog:['Architectural assistant','Architect','Senior architect or project lead','Principal, partner or urban design specialist'],
+ pros:['Lasting, visible work','Blend of art, technology and society','Variety of project types'],
+ cons:['Long training and licensing','Tight budgets limit design ideas','Long hours near deadlines'],
+ outlook:'Cities and buildings always need renewal, and sustainability is reshaping design. Work follows construction cycles, which vary by country.',
+ res:[['ArchDaily','https://www.archdaily.com'],['Khan Academy Art','https://www.khanacademy.org'],['Coursera','https://www.coursera.org']],
+ proj:['Draw a floor plan of a space you would improve','Build a cardboard model of a small building'],rel:['civil-engineer','industrial-designer','project-manager']}
+];
+const byId = id => CAREERS.find(c => c.id === id);
+
+/* ---------- store (localStorage behind one small API; swap for a backend later) ---------- */
+const KEY = 'career-navigator-ai.v1';
+const defaults = () => ({ answers:{}, step:0, done:false, saved:[], roadmaps:{}, activeRm:null, activity:[], chat:[], name:'' });
+let S = (() => { try { const r = localStorage.getItem(KEY); if (r) return Object.assign(defaults(), JSON.parse(r)); } catch (e) {} return defaults(); })();
+const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+const log = m => { S.activity.unshift({ t:Date.now(), m }); S.activity = S.activity.slice(0, 20); };
+let UI = { confirmReset:false, openKeys:new Set(), anim:false };
+const F = { q:'', cat:'All', edu:'all', skills:[] };
+
+/* ---------- scoring ---------- */
+function qMax() {
+  const m = {}; TK.split('').forEach(k => m[k] = 0);
+  QS.forEach(q => TK.split('').forEach(k => {
+    m[k] += q.type === 'likert' ? (q.w[k] || 0) : Math.max(0, ...q.o.map(o => o[1][k] || 0));
+  }));
+  return m;
+}
+const QMAX = qMax();
+const answeredAll = () => QS.every(q => S.answers[q.id] !== undefined);
+function computeProfile() {
+  if (!S.done || !answeredAll()) return null;
+  const raw = {}; TK.split('').forEach(k => raw[k] = 0);
+  QS.forEach(q => {
+    const a = S.answers[q.id];
+    if (q.type === 'likert') TK.split('').forEach(k => raw[k] += (q.w[k] || 0) * (a - 1) / 4);
+    else TK.split('').forEach(k => raw[k] += (q.o[a][1][k] || 0));
+  });
+  const norm = TK.split('').map(k => QMAX[k] ? raw[k] / QMAX[k] : 0);
+  const top = Math.max(...norm) || 1;
+  return norm.map(n => Math.round(n / top * 92));   // relative to the person's own strongest trait
+}
+function scoreCareer(u, c) {
+  const U = u.map(x => x / 100), W = c.w.map(x => x / 3);
+  let dot = 0, su = 0, sw = 0, sww = 0;
+  U.forEach((x, i) => { dot += x * W[i]; su += x * x; sww += W[i] * W[i]; sw += W[i]; });
+  const cos = dot / Math.sqrt((su * sww) || 1), wavg = dot / (sw || 1);
+  return Math.max(35, Math.min(97, Math.round(100 * (0.4 * cos + 0.6 * wavg))));
+}
+const bandOf = s => s >= 72 ? 'Strong match' : s >= 60 ? 'Good match' : 'Worth exploring';
+function explain(u, c) {
+  const rows = c.w.map((w, i) => ({ i, w, v:u[i], c:(u[i] / 100) * (w / 3) })).filter(r => r.w > 0);
+  const top = rows.slice().sort((a, b) => b.c - a.c).slice(0, 3);
+  const gaps = rows.filter(r => r.w >= 2 && r.v < 50).sort((a, b) => a.v - b.v).slice(0, 2);
+  return { top, gaps };
+}
+let _rec = null, _recKey = '';
+function recs() {
+  const u = computeProfile(); if (!u) return [];
+  const k = JSON.stringify(S.answers) + S.done;
+  if (k !== _recKey) { _rec = CAREERS.map(c => ({ c, s:scoreCareer(u, c) })).sort((a, b) => b.s - a.s); _recKey = k; }
+  return _rec;
+}
+const matchOf = id => { const r = recs().find(x => x.c.id === id); return r ? r.s : null; };
+const wordW = w => w >= 3 ? 'relies heavily on' : w === 2 ? 'draws a lot on' : 'draws a little on';
+
+/* ---------- advisor service: demo mode.
+   To connect a real model, replace the body of ask() with a fetch to YOUR server route
+   (for example POST /api/advisor). The server holds the API key; the browser never does. ---------- */
+const Advisor = {
+  async ask(question, ctx) { await sleep(700 + Math.random() * 500); return demoReply(question, ctx); }
+};
+function advisorContext() {
+  const r = recs();
+  return { profile:computeProfile(), recs:r, saved:S.saved.map(byId).filter(Boolean) };
+}
+function focusCareer(q, ctx) {
+  const low = q.toLowerCase();
+  const m = CAREERS.find(c => low.includes(c.title.toLowerCase().split(' (')[0]) || low.includes(c.title.toLowerCase().split(' /')[0]));
+  if (m) return m;
+  if (ctx.saved.length) return ctx.saved[0];
+  return ctx.recs[0] ? ctx.recs[0].c : null;
+}
+function demoReply(q, ctx) {
+  const low = q.toLowerCase(), f = focusCareer(q, ctx), u = ctx.profile;
+  const need = '<p>I need a career to work from first. Take the 18-question assessment or save a career from the Explorer, then ask again. I will use your answers for every reply.</p>';
+  const top3 = u ? u.map((v, i) => ({ v, i })).sort((a, b) => b.v - a.v).slice(0, 3).map(x => TRAITS[x.i].name.toLowerCase()) : [];
+  if (/disadvant|downside|\bcons\b|challeng|negative|hard about/.test(low)) {
+    if (!f) return need;
+    return `<p>Honest downsides of <b>${esc(f.title)}</b>:</p><ul>${f.cons.map(x => `<li>${esc(x)}</li>`).join('')}</ul><p>${esc(f.outlook)}</p><p>Whether these matter depends on you. Talking to someone who works in the field is the best way to test them.</p>`;
+  }
+  if (/switch|change|transition|pivot|move from/.test(low)) {
+    if (!f) return need;
+    const rel = f.rel.map(byId);
+    return `<p>Switching is common, and <b>${esc(f.title)}</b> skills transfer well. Closely related careers:</p><ul>${rel.map(r => `<li><b>${esc(r.title)}</b>: shares ${r.skills.filter(s => f.skills.includes(s)).slice(0, 2).map(esc).join(' and ') || 'some core skills'}</li>`).join('')}</ul><p>Keep your first degree broad, build projects, and treat any move as adding a skill rather than starting over.</p>`;
+  }
+  if (/why|recommend|match/.test(low)) {
+    if (!f) return need;
+    if (!u) return `<p><b>${esc(f.title)}</b> is on your list from the Explorer, but I have no assessment results yet, so I cannot say why it fits you. After the assessment I can explain each match.</p>`;
+    const ex = explain(u, f), s = matchOf(f.id);
+    return `<p>Here is why <b>${esc(f.title)}</b> came up for you (about ${s}%, an approximate guide, not a measurement):</p><ul>${ex.top.map(r => `<li>Your <b>${TRAITS[r.i].name.toLowerCase()}</b> score is ${r.v}, and this career ${wordW(r.w)} it.</li>`).join('')}</ul>${ex.gaps.length ? `<p>One thing to watch: it also ${wordW(3)} ${ex.gaps.map(g => TRAITS[g.i].name.toLowerCase()).join(' and ')}, which scored lower for you. That is something you can build.</p>` : '<p>None of its key traits scored low for you, which is a good sign.</p>'}`;
+  }
+  if (/university|study|major|degree|college|school subject/.test(low)) {
+    if (!f) return need;
+    return `<p>For <b>${esc(f.title)}</b>, consider these majors:</p><ul>${f.majors.map(m => `<li>${esc(m)}</li>`).join('')}</ul><p>At school, focus on ${f.subjects.slice(0, 3).map(esc).join(', ')}.</p><p>${esc(f.eduNote)}</p><p>Compare entry requirements for each university, because they differ by country.</p>`;
+  }
+  if (/skill|develop|improve|strengthen/.test(low)) {
+    if (!f) return need;
+    return `<p>Skills that matter most for <b>${esc(f.title)}</b>:</p><ul>${f.skills.map(s => `<li>${esc(s)}</li>`).join('')}</ul>${u ? `<p>Based on your profile, start with the areas where you have the most room to grow, and keep using your strongest ones: ${top3.join(', ')}.</p>` : '<p>Take the assessment and I can point out which of these to prioritise for you.</p>'}`;
+  }
+  if (/start|learn|begin|resource|how do i/.test(low)) {
+    if (!f) return need;
+    return `<p>A simple way to start with <b>${esc(f.title)}</b>:</p><ul><li><b>This week:</b> ${esc(f.proj[0])}</li><li><b>This month:</b> ${esc(f.proj[1])}</li><li><b>Free resources:</b> ${f.res.map(r => `<a class="link" href="${r[1]}" target="_blank" rel="noopener">${esc(r[0])}</a>`).join(', ')}</li></ul><p>I can also generate a full step-by-step roadmap on the <a class="link" href="#roadmap">Roadmap page</a>.</p>`;
+  }
+  if (/other|else|suit|alternativ|instead|more careers/.test(low)) {
+    if (!ctx.recs.length) return need;
+    const more = ctx.recs.slice(3, 7);
+    return `<p>Beyond your top matches, these are also worth a look:</p><ul>${more.map(r => `<li><a class="link" href="#career-${r.c.id}">${esc(r.c.title)}</a> (${esc(r.c.cat)}, about ${r.s}%)</li>`).join('')}</ul>${ctx.saved.length ? `<p>You have also saved ${ctx.saved.length} career${ctx.saved.length > 1 ? 's' : ''}, so I will keep those in mind.</p>` : ''}<p>Treat the list as a starting point for exploring, not an answer.</p>`;
+  }
+  return `<p>I can help with questions about your results and careers. Try one of these:</p><ul><li>Why did you recommend this career?</li><li>What other careers might suit me?</li><li>What should I study at university?</li><li>What are the disadvantages of this career?</li></ul><p>This is a demo assistant. It answers from your assessment and the career data in this app, not from a live AI model.</p>`;
+}
+
+/* ---------- roadmap generator ---------- */
+function buildRoadmap(c) {
+  const sk = c.skills, sb = c.subjects, rl = c.rel.map(byId);
+  return [
+    ['Explore the career','compass',[`Read the ${c.title} overview and note 3 things that excite you and 3 that worry you`,'Talk to someone who works in this field, or watch a day-in-the-life interview',`Compare with two related careers: ${rl[0].title} and ${rl[1].title}`]],
+    ['Learn foundational skills','brain',sk.slice(0, 3).map(s => `Start a beginner course, book or weekly practice in ${s}`)],
+    ['Study relevant school subjects','book-open',sb.slice(0, 3).map(s => `Set a clear goal for ${s} this term and review progress monthly`)],
+    ['Complete beginner projects','hammer',[c.proj[0], c.proj[1], 'Write down what worked, what failed and what you learned']],
+    ['Build a portfolio','folder-open',['Pick your best 2 or 3 projects and write a short story for each','Put them in one place, such as a simple site or shared folder','Ask a teacher or mentor for honest feedback']],
+    ['Research universities','graduation-cap',[`Shortlist 5 programmes in ${c.majors.slice(0, 3).join(', ')}`,'Compare entry requirements, language, cost and location','Note application deadlines and scholarship options']],
+    ['Prepare for admissions','clipboard-check',['Check required exams and subjects for every shortlisted programme','Draft a personal statement that connects your projects to the field','Collect documents and recommendation letters, then set a timeline']],
+    ['Develop professional skills','briefcase',['Look for an internship, volunteering or job-shadowing opportunity',`Learn one more skill from this list: ${sk.slice(3).join(', ')}`,'Join a club, competition or online community in this field']]
+  ].map((s, i) => ({ id:'s' + i, title:s[0], icon:s[1], tasks:s[2].map((tx, j) => ({ id:`s${i}t${j}`, text:tx })) }));
+}
+function rmProgress(id) {
+  const c = byId(id), st = buildRoadmap(c), done = S.roadmaps[id] || {};
+  const all = st.flatMap(s => s.tasks), n = all.filter(x => done[x.id]).length;
+  return { st, n, total:all.length, pct:Math.round(100 * n / all.length), done };
+}
+
+/* ---------- charts ---------- */
+function radar(vals, labels = true) {
+  const cx = 230, cy = 175, R = 112, N = 8;
+  const pt = (i, r) => { const a = (-90 + i * 45) * Math.PI / 180; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; };
+  const ring = f => Array.from({ length:N }, (_, i) => pt(i, R * f).join(',')).join(' ');
+  const poly = vals.map((v, i) => pt(i, R * v / 100).join(',')).join(' ');
+  const lab = labels ? TRAITS.map((tr, i) => {
+    const [x, y] = pt(i, R + 16), c = Math.cos((-90 + i * 45) * Math.PI / 180);
+    return `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="${Math.abs(c) < .2 ? 'middle' : c > 0 ? 'start' : 'end'}" font-size="11.5" font-weight="500" fill="var(--ink2)">${tr.short}</text>`;
+  }).join('') : '';
+  return `<svg viewBox="0 0 460 350" role="img" aria-label="Radar chart of eight interest areas" style="width:100%;height:auto;display:block">
+    ${[.25,.5,.75,1].map(f => `<polygon points="${ring(f)}" fill="none" stroke="var(--line)" stroke-width="1"/>`).join('')}
+    ${Array.from({ length:N }, (_, i) => `<line x1="${cx}" y1="${cy}" x2="${pt(i, R)[0].toFixed(1)}" y2="${pt(i, R)[1].toFixed(1)}" stroke="var(--line)"/>`).join('')}
+    <polygon points="${poly}" fill="var(--blue)" fill-opacity=".16" stroke="var(--blue)" stroke-width="2" stroke-linejoin="round"/>
+    ${vals.map((v, i) => `<circle cx="${pt(i, R * v / 100)[0].toFixed(1)}" cy="${pt(i, R * v / 100)[1].toFixed(1)}" r="3.5" fill="var(--blue)"/>`).join('')}
+    ${lab}</svg>`;
+}
+function ring(p) {
+  const r = 40, c = 2 * Math.PI * r;
+  return `<div class="ring"><svg viewBox="0 0 96 96" width="96" height="96"><circle cx="48" cy="48" r="${r}" fill="none" stroke="var(--surface2)" stroke-width="9"/><circle cx="48" cy="48" r="${r}" fill="none" stroke="var(--blue)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${(c * p / 100).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 48 48)"/></svg><b>${p}%</b></div>`;
+}
+const bar = v => `<div class="bar"><div class="fill" style="width:${v}%"></div></div>`;
+
+/* ---------- shared view parts ---------- */
+const route = () => (location.hash.slice(1) || 'home');
+function header() {
+  const r = route();
+  const L = (h, label, on) => `<a href="#${h}" class="${on ? 'on' : ''}" ${h === 'home' ? `data-a="scroll" data-to="${label === 'How It Works' ? 'how' : 'about'}"` : ''}>${t(label)}</a>`;
+  return `<header class="hdr ${UI.menu ? 'open' : ''}"><div class="wrap">
+    <a class="logo" href="#home" aria-label="Career Navigator AI home"><span class="logo-mark">${ico('compass')}</span>Career Navigator AI</a>
+    <nav class="nav" aria-label="Main">
+      ${L('explorer', 'Discover Careers', r === 'explorer' || r.startsWith('career-'))}${L('home', 'How It Works')}${L('home', 'About')}
+      <a href="#dashboard" class="${r === 'dashboard' ? 'on' : ''}">${t('Dashboard')}</a><a href="#advisor" class="${r === 'advisor' ? 'on' : ''}">${t('AI Advisor')}</a>
+    </nav>
+    <div class="hdr-cta"><button class="btn btn-ghost btn-sm" data-a="modal" data-m="login">${t('Log in')}</button><button class="btn btn-primary btn-sm" data-a="modal" data-m="signup">${t('Sign up')}</button></div>
+    <button class="burger" data-a="menu" aria-label="Menu">${ico(UI.menu ? 'x' : 'menu')}</button>
+  </div></header>`;
+}
+function footer() {
+  return `<footer class="foot"><div class="wrap"><div class="cols">
+    <div><a class="logo" href="#home"><span class="logo-mark">${ico('compass')}</span>Career Navigator AI</a>
+      <p style="margin-top:12px;max-width:34em">Exploratory guidance to help students understand their interests and see where they could lead. It is not a psychological diagnosis and does not predict success.</p></div>
+    <div><h4>Product</h4><a href="#assessment">Assessment</a><a href="#explorer">Career Explorer</a><a href="#advisor">AI Advisor</a><a href="#roadmap">Roadmap</a></div>
+    <div><h4>Company</h4><a href="#home" data-a="scroll" data-to="how">How it works</a><a href="#home" data-a="scroll" data-to="about">About</a><a href="#dashboard">Dashboard</a></div>
+  </div><p class="tiny" style="margin-top:28px">© 2026 Career Navigator AI. Prototype. Your data stays in this browser.</p></div></footer>`;
+}
+function saveBtn(id) {
+  const on = S.saved.includes(id);
+  return `<button class="icon-btn save ${on ? 'on' : ''}" data-a="save" data-id="${id}" aria-pressed="${on}" aria-label="${on ? 'Remove from saved' : 'Save career'}" title="${on ? 'Saved' : 'Save'}">${ico('bookmark')}</button>`;
+}
+function careerCard(c) {
+  const m = matchOf(c.id);
+  return `<article class="card ccard"><a class="a" href="#career-${c.id}" aria-label="${esc(c.title)}"></a>
+    <div class="row between" style="align-items:flex-start"><div class="tile">${ico(CATICON[c.cat])}</div><div class="row" style="gap:8px">${m ? `<span class="match-b">~${m}%</span>` : ''}${saveBtn(c.id)}</div></div>
+    <div><h3>${esc(c.title)}</h3><div class="tiny" style="margin-top:2px">${esc(c.cat)} · ${EDU[c.edu]}</div></div>
+    <p>${esc(c.short)}</p>
+    <div class="chips">${c.skills.slice(0, 3).map(s => `<span class="chip">${esc(s)}</span>`).join('')}</div></article>`;
+}
+const disclaimer = () => `<div class="callout">${ico('info')}<div><b>Exploratory guidance, not a diagnosis.</b> This assessment is not scientifically validated. It does not diagnose anything or predict how well you would do in a career. Use it to start conversations and to explore, and compare it with your own experience and advice from people you trust.</div></div>`;
+
+/* ---------- views ---------- */
+function viewHome() {
+  const sample = [86, 72, 38, 55, 64, 58, 80, 34];
+  const demo = CAREERS.filter(c => ['data-scientist', 'economist', 'product-manager'].includes(c.id));
+  const sampleScores = demo.map(c => ({ c, s:scoreCareer(sample, c) })).sort((a, b) => b.s - a.s);
+  return `
+  <section class="hero"><div class="wrap">
+    <div>
+      <div class="eyebrow">For students aged 15 to 22</div>
+      <h1 style="margin-top:16px">Your Future Career Starts With <em>Understanding Yourself.</em></h1>
+      <p class="lead">Answer 18 questions about how you think and what you enjoy. Get a clear profile, explainable career matches, a step-by-step roadmap and an advisor to ask when you are unsure.</p>
+      <div class="cta"><a class="btn btn-primary btn-lg" href="#assessment">${t('Discover Your Career Path')} ${ico('arrow-right')}</a><a class="btn btn-ghost btn-lg" href="#explorer">${t('Explore Careers')}</a></div>
+      <div class="proof"><span>${ico('check')}Free to try</span><span>${ico('check')}No account needed</span><span>${ico('check')}Results stay on your device</span></div>
+    </div>
+    <div class="win" aria-label="Preview of the career analysis dashboard">
+      <div class="win-bar"><i></i><i></i><i></i><b>Example analysis · sample profile</b></div>
+      <div class="win-body"><div>${radar(sample, false)}<div class="tiny" style="text-align:center;margin-top:-4px">Interest profile (8 areas)</div></div>
+      <div><div class="lbl" style="margin-top:6px">Top matches</div>${sampleScores.map(r => `<div class="mini-rec"><span>${esc(r.c.title)}</span><span>~${r.s}%</span></div>`).join('')}
+        <div class="lbl" style="margin-top:16px">Strongest traits</div><div class="chips"><span class="chip">Analytical</span><span class="chip">Research</span><span class="chip">Technical</span></div>
+        <div class="lbl" style="margin-top:16px">Roadmap</div>${bar(42)}<div class="tiny" style="margin-top:6px">10 of 24 steps done</div></div></div>
+    </div>
+  </div></section>
+
+  <section class="band" id="how"><div class="wrap">
+    <div class="eyebrow">How it works</div><h2 style="margin-top:12px">From "I have no idea" to a plan you can start this week.</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Answer honest questions</h3><p class="muted">Multiple choice, ratings and short scenarios about what you enjoy and how you work. It takes about 8 minutes, and your progress is saved.</p></div>
+      <div class="step"><div class="n">2</div><h3>See your profile and matches</h3><p class="muted">Eight areas, from analytical thinking to entrepreneurial interest, and careers ranked with a clear reason for each.</p></div>
+      <div class="step"><div class="n">3</div><h3>Follow your roadmap</h3><p class="muted">Pick a career and get tasks from first exploration to university research. Tick them off and track progress.</p></div>
+    </div></div></section>
+
+  <section class="band alt"><div class="wrap">
+    <div class="eyebrow">Career categories</div><h2 style="margin-top:12px">${CAREERS.length} careers across 11 fields.</h2>
+    <p class="sub">Browse by field. Each profile covers skills, school subjects, university majors and honest downsides.</p>
+    <div class="cats">${CATS.map(([n, i]) => `<button class="cat" data-a="cat" data-c="${n}"><span class="tile">${ico(i)}</span><span><b>${n}</b><small>${CAREERS.filter(c => c.cat === n).length} careers</small></span></button>`).join('')}</div>
+  </div></section>
+
+  <section class="band"><div class="wrap">
+    <div class="eyebrow">Example recommendations</div><h2 style="margin-top:12px">Every match comes with the reason behind it.</h2>
+    <p class="sub">Sample output for the example profile above. Your own results will differ.</p>
+    <div class="grid g3" style="margin-top:28px">${sampleScores.map(r => {
+      const ex = explain(sample, r.c);
+      return `<article class="card pad"><div class="row between"><div class="tile">${ico(CATICON[r.c.cat])}</div><span class="match-b">~${r.s}% · ${bandOf(r.s)}</span></div>
+      <h3 style="margin-top:14px">${esc(r.c.title)}</h3><p class="muted small" style="margin-top:6px">${esc(r.c.short)}</p>
+      <div class="lbl" style="margin-top:16px">Why it matched</div><p class="small muted">Your ${ex.top.slice(0, 2).map(x => TRAITS[x.i].name.toLowerCase()).join(' and ')} line up with what this career relies on.</p>
+      <a class="link small" style="display:inline-block;margin-top:14px" href="#career-${r.c.id}">View career →</a></article>`;
+    }).join('')}</div></div></section>
+
+  <section class="band alt"><div class="wrap split">
+    <div><div class="eyebrow">AI Career Advisor</div><h2 style="margin-top:12px">Ask the questions you would not ask out loud.</h2>
+      <p class="sub">The advisor knows your results and the careers you saved, so answers are about you, not about careers in general.</p>
+      <ul class="ticks"><li>${ico('check')}<span>Why was this career recommended to me?</span></li><li>${ico('check')}<span>What should I study, and what are the downsides?</span></li><li>${ico('check')}<span>Could I switch to something else later?</span></li></ul>
+      <a class="btn btn-primary" style="margin-top:26px" href="#advisor">Try the advisor ${ico('arrow-right')}</a>
+      <p class="tiny" style="margin-top:12px">Demo mode: replies come from your results and built-in career data. A live AI model connects through a server route later.</p></div>
+    <div class="card pad" style="display:grid;gap:12px"><div class="msg u" style="max-width:80%">Why did you recommend Data Scientist?</div>
+      <div class="msg a" style="max-width:92%"><p>Your <b>analytical thinking</b> and <b>research interests</b> scored high, and this career relies heavily on both.</p><p>One thing to watch: it also leans on communication, which scored lower. That is a skill you can build.</p></div>
+      <div class="msg u" style="max-width:80%">What should I study?</div></div>
+  </div></section>
+
+  <section class="band" id="about"><div class="wrap">
+    <div class="eyebrow">About</div><h2 style="margin-top:12px">Built to help you explore, not to label you.</h2>
+    <div class="grid g3" style="margin-top:28px">
+      <div><h3 style="font-size:1.02rem">What it is</h3><p class="muted" style="margin-top:6px">A structured way to notice your interests, compare them with real careers and plan next steps.</p></div>
+      <div><h3 style="font-size:1.02rem">What it is not</h3><p class="muted" style="margin-top:6px">It is not a scientifically validated test, a psychological diagnosis or a prediction of success. Scores are approximate.</p></div>
+      <div><h3 style="font-size:1.02rem">Your data</h3><p class="muted" style="margin-top:6px">In this prototype everything is stored only in your browser. There are no accounts and nothing is sent anywhere.</p></div></div></div></section>
+
+  <section class="band" style="padding-top:0"><div class="wrap"><div class="cta-final"><h2>Take 8 minutes. Leave with a direction.</h2><p>No sign-up. You can stop and continue later, and your answers stay on this device.</p><a class="btn btn-primary btn-lg" href="#assessment">${t('Discover Your Career Path')}</a></div></div></section>`;
+}
+
+function viewAssessment() {
+  if (S.done) return `<div class="wrap page"><div class="q-shell"><div class="card q-card" style="text-align:center">
+    <div class="tile" style="margin:0 auto;background:var(--good-soft);color:var(--good)">${ico('check')}</div><h2>Assessment complete</h2>
+    <p class="muted">Your profile and career matches are ready. You can retake the assessment at any time. Your current answers will be kept so you can adjust them.</p>
+    <div class="row" style="justify-content:center;margin-top:20px"><a class="btn btn-primary" href="#results">View results</a><button class="btn btn-ghost" data-a="retake">Retake assessment</button></div></div></div></div>`;
+  const i = S.step, q = QS[i], v = S.answers[q.id];
+  const body = q.type === 'likert'
+    ? `<div class="likert" role="radiogroup" aria-label="Rating from 1 to 5">${[1, 2, 3, 4, 5].map(n => `<button class="${v === n ? 'sel' : ''}" role="radio" aria-checked="${v === n}" data-a="ans" data-v="${n}">${n}</button>`).join('')}</div><div class="scale-l"><span>1 · Not like me</span><span>5 · Very much like me</span></div>`
+    : `<div class="opts" role="radiogroup">${q.o.map((o, k) => `<button class="opt ${v === k ? 'sel' : ''}" role="radio" aria-checked="${v === k}" data-a="ans" data-v="${k}"><span class="dot"></span><span>${esc(o[0])}</span></button>`).join('')}</div>`;
+  const pct = Math.round(100 * (i + (v !== undefined ? 1 : 0)) / QS.length);
+  return `<div class="wrap page"><div class="q-shell">
+    <div class="prog"><span class="small" style="font-weight:600;white-space:nowrap">Question ${i + 1} of ${QS.length}</span><div class="bar"><div class="fill" style="width:${pct}%;animation:none;transition:width .4s"></div></div><span class="tiny" style="white-space:nowrap">${pct}%</span></div>
+    <div class="card q-card ${UI.anim ? 'enter' : ''}"><span class="tag">${{ likert:'Rating', choice:'Multiple choice', scenario:'Scenario' }[q.type]}</span>
+      <h2>${esc(q.text)}</h2><p class="muted small">${QTYPE[q.type]}</p>${body}</div>
+    <div class="q-nav"><button class="btn btn-ghost" data-a="back" ${i === 0 ? 'disabled' : ''}>${ico('chevron-left')}Back</button>
+      <span class="tiny">${ico('shield-check', '')} Progress saved on this device</span>
+      <button class="btn btn-primary" data-a="next" ${v === undefined ? 'disabled' : ''}>${i === QS.length - 1 ? 'See results' : 'Next'}${ico('chevron-right')}</button></div></div></div>`;
+}
+
+function viewResults() {
+  const u = computeProfile();
+  if (!u) return `<div class="wrap page"><h1 class="h-page">Your career profile</h1><div class="empty">Complete the assessment to see your profile and matches.<br><a class="btn btn-primary" style="margin-top:14px" href="#assessment">${S.step || Object.keys(S.answers).length ? 'Continue assessment' : 'Start assessment'}</a></div></div>`;
+  const r = recs().slice(0, 8), order = u.map((v, i) => ({ v, i })).sort((a, b) => b.v - a.v);
+  return `<div class="wrap page">
+    <div class="row between" style="align-items:flex-end"><div><div class="eyebrow">Results</div><h1 class="h-page" style="margin-top:8px">Your career profile</h1></div>
+      <div class="row"><a class="btn btn-ghost btn-sm" href="#assessment">Review answers</a><a class="btn btn-soft btn-sm" href="#advisor">${ico('sparkles')}Ask the advisor</a></div></div>
+    <div style="margin:16px 0 24px">${disclaimer()}</div>
+    <div class="grid g2" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start">
+      <div class="card pad"><h3 style="font-size:1rem">Interest map</h3>${radar(u)}</div>
+      <div class="card pad"><h3 style="font-size:1rem;margin-bottom:6px">Trait scores</h3><p class="tiny" style="margin-bottom:8px">Scores are relative to your own strongest area, so the top trait is near the top of the scale.</p>
+        ${order.map(o => `<div class="trait-row" title="${esc(TRAITS[o.i].d)}"><b>${TRAITS[o.i].name}</b>${bar(o.v)}<span class="v">${o.v}</span></div>`).join('')}
+        <p class="small muted" style="margin-top:12px">You lean towards <b>${TRAITS[order[0].i].name.toLowerCase()}</b>, <b>${TRAITS[order[1].i].name.toLowerCase()}</b> and <b>${TRAITS[order[2].i].name.toLowerCase()}</b>.</p></div>
+    </div>
+    <div class="sec"><h2>Recommended careers</h2>
+      <p class="muted small" style="margin:-6px 0 14px;max-width:46em">Matches compare your trait scores with what each career relies on. Percentages are rough guides for comparing options, not precise measurements. Open "Why this matched" on any card.</p>
+      <div class="grid">${r.map((x, k) => recCard(x, k, u)).join('')}</div></div>
+    <details class="card pad sec" data-k="method" ${UI.openKeys.has('method') ? 'open' : ''}><summary style="cursor:pointer;font-weight:600">How matches are calculated</summary>
+      <p class="muted small" style="margin-top:10px">Each answer adds points to one or more of eight traits. Totals are scaled so your strongest trait sits near 92. Each career has a hand-written importance weight for every trait. The match combines how closely your profile shape follows the career's, and how strong you are in the traits it relies on most. The weights are editorial judgements for this prototype, not research findings.</p></details></div>`;
+}
+function recCard(x, k, u) {
+  const c = x.c, ex = explain(u, c), key = 'why-' + c.id;
+  return `<article class="card rec"><div class="rec-top"><span class="rank">${k + 1}</span>
+    <div class="rec-main"><div class="row" style="gap:8px"><h3><a href="#career-${c.id}">${esc(c.title)}</a></h3><span class="tag">${esc(c.cat)}</span></div>
+      <p class="muted small" style="margin-top:6px">${esc(c.short)}</p></div>
+    <div class="score"><b>~${x.s}%</b><span class="band-l">${bandOf(x.s)}</span></div></div>
+    <details class="why" data-k="${key}" ${UI.openKeys.has(key) ? 'open' : ''}><summary>${ico('chevron-right')}Why this matched</summary>
+      <div class="why-body"><div><h4>Reasons</h4><ul>${ex.top.map(r => `<li>Your <b>${TRAITS[r.i].name.toLowerCase()}</b> (${r.v}) fits: this career ${wordW(r.w)} it.</li>`).join('')}${ex.gaps.map(g => `<li>To build: it ${wordW(g.w)} <b>${TRAITS[g.i].name.toLowerCase()}</b>, which scored ${g.v} for you.</li>`).join('')}</ul></div>
+      <div><h4>Relevant skills</h4><div class="chips">${c.skills.map(s => `<span class="chip">${esc(s)}</span>`).join('')}</div>
+        <h4 style="margin-top:14px">Education</h4><p class="small muted">${EDU[c.edu]}. ${esc(c.eduNote)}</p>
+        <h4 style="margin-top:14px">Industries</h4><div class="chips">${c.ind.map(s => `<span class="chip">${esc(s)}</span>`).join('')}</div></div>
+      <div class="row" style="grid-column:1/-1"><a class="btn btn-primary btn-sm" href="#career-${c.id}">View career</a><button class="btn btn-ghost btn-sm" data-a="save" data-id="${c.id}">${ico('bookmark')}${S.saved.includes(c.id) ? 'Saved' : 'Save'}</button><button class="btn btn-ghost btn-sm" data-a="rmgen" data-id="${c.id}">${ico('map')}Build roadmap</button></div></div></details></article>`;
+}
+
+function viewExplorer() {
+  return `<div class="wrap page"><div class="eyebrow">Career Explorer</div><h1 class="h-page" style="margin-top:8px">Discover careers</h1>
+    <p class="muted" style="margin-bottom:20px">Search ${CAREERS.length} careers, filter by field, skills and education, and save the ones you want to compare.</p>
+    <div class="card filters">
+      <div class="search">${ico('search')}<input type="search" id="q" placeholder="Search by title, skill or industry" value="${esc(F.q)}" aria-label="Search careers" autocomplete="off"></div>
+      <div><span class="lbl">Field</span><div class="chips">${['All', ...CATS.map(c => c[0])].map(c => `<button class="chip ${F.cat === c ? 'on' : ''}" data-a="fcat" data-c="${c}">${c}</button>`).join('')}</div></div>
+      <div><span class="lbl">Skills (must include all selected)</span><div class="chips">${SKILLS.map(s => `<button class="chip ${F.skills.includes(s) ? 'on' : ''}" data-a="fskill" data-s="${s}">${s}</button>`).join('')}</div></div>
+      <div style="max-width:320px"><label class="lbl" for="edu">Education</label><select id="edu"><option value="all">Any education path</option>${Object.entries(EDU).map(([k, v]) => `<option value="${k}" ${F.edu === k ? 'selected' : ''}>${v}</option>`).join('')}</select></div>
+    </div>
+    <div class="row between" style="margin:22px 0 14px"><span class="small muted" id="count"></span><span class="row"><button class="btn btn-ghost btn-sm" data-a="fclear">Clear filters</button></span></div>
+    <div class="grid g3" id="grid"></div></div>`;
+}
+function filtered() {
+  const q = F.q.trim().toLowerCase();
+  return CAREERS.filter(c => (F.cat === 'All' || c.cat === F.cat) && (F.edu === 'all' || c.edu === F.edu) && F.skills.every(s => c.skills.includes(s)) &&
+    (!q || [c.title, c.cat, c.short, c.skills.join(' '), c.ind.join(' '), c.majors.join(' ')].join(' ').toLowerCase().includes(q)));
+}
+function fillGrid() {
+  const g = $('#grid'); if (!g) return;
+  const list = filtered();
+  $('#count').textContent = `${list.length} career${list.length === 1 ? '' : 's'}`;
+  g.innerHTML = list.length ? list.map(careerCard).join('') : `<div class="empty" style="grid-column:1/-1">No careers match these filters. Try removing a skill or choosing "All".</div>`;
+  if (window.lucide) lucide.createIcons();
+}
+
+function viewCareer(id) {
+  const c = byId(id);
+  if (!c) return `<div class="wrap page"><div class="empty">That career was not found. <a class="link" href="#explorer">Back to the Explorer</a></div></div>`;
+  const m = matchOf(c.id), rl = c.rel.map(byId), has = S.roadmaps[c.id];
+  const list = a => `<ul>${a.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  return `<div class="wrap page"><a class="link small" href="#explorer">← All careers</a>
+    <div class="row between" style="margin-top:14px;align-items:flex-start"><div class="row" style="gap:16px;align-items:flex-start"><div class="tile" style="width:52px;height:52px">${ico(CATICON[c.cat], '')}</div>
+      <div><div class="row" style="gap:8px"><span class="tag">${esc(c.cat)}</span><span class="chip">${EDU[c.edu]}</span></div><h1 class="h-page" style="margin:10px 0 0">${esc(c.title)}</h1></div></div>
+      <div class="row">${m ? `<span class="match-b" style="font-size:13px;padding:6px 10px">~${m}% match for you</span>` : ''}<button class="btn btn-ghost" data-a="save" data-id="${c.id}">${ico('bookmark')}${S.saved.includes(c.id) ? 'Saved' : 'Save'}</button><button class="btn btn-primary" data-a="rmgen" data-id="${c.id}">${ico('map')}${has ? 'Open roadmap' : 'Build roadmap'}</button></div></div>
+    <div class="detail"><div>
+      <section class="card panel"><h2>Overview</h2><p class="muted">${esc(c.overview)}</p></section>
+      <section class="card panel"><h2>Typical responsibilities</h2>${list(c.resp)}</section>
+      <section class="card panel"><h2>Career progression</h2><ul class="prog-list">${c.prog.map((p, i) => `<li><span class="nn">${i + 1}</span><span>${esc(p)}</span></li>`).join('')}</ul><p class="tiny">Titles and timelines vary between employers and countries.</p></section>
+      <section class="card panel"><div class="pc"><div><h3 style="color:var(--good)">${ico('thumbs-up')}Advantages</h3>${list(c.pros)}</div><div><h3 style="color:var(--warn)">${ico('triangle-alert')}Challenges</h3>${list(c.cons)}</div></div></section>
+      <section class="card panel"><h2>Future outlook</h2><p class="muted">${esc(c.outlook)}</p><p class="tiny" style="margin-top:8px">Qualitative view only. Check your national labour statistics for current figures.</p></section>
+      <section class="card panel"><h2>Suggested learning resources</h2><ul>${c.res.map(r => `<li><a class="link" href="${r[1]}" target="_blank" rel="noopener">${esc(r[0])}</a></li>`).join('')}</ul></section>
+      <section class="card panel"><h2>Related careers</h2><div class="grid g3">${rl.map(r => `<a class="card pad" style="box-shadow:none" href="#career-${r.id}"><div class="tile" style="width:34px;height:34px">${ico(CATICON[r.cat])}</div><b style="display:block;margin-top:10px;font-size:14px">${esc(r.title)}</b><span class="tiny">${esc(r.cat)}</span></a>`).join('')}</div></section>
+    </div>
+    <aside class="card panel" style="position:sticky;top:84px"><h2>Quick facts</h2>
+      <div class="fact"><span class="lbl">Required skills</span><div class="chips">${c.skills.map(s => `<span class="chip">${esc(s)}</span>`).join('')}</div></div>
+      <div class="fact"><span class="lbl">School subjects</span><div class="chips">${c.subjects.map(s => `<span class="chip">${esc(s)}</span>`).join('')}</div></div>
+      <div class="fact"><span class="lbl">University majors</span>${c.majors.map(s => `<div class="small">${esc(s)}</div>`).join('')}</div>
+      <div class="fact"><span class="lbl">Potential industries</span><div class="chips">${c.ind.map(s => `<span class="chip">${esc(s)}</span>`).join('')}</div></div>
+      <div class="fact"><span class="lbl">Education path</span><p class="small muted">${esc(c.eduNote)}</p></div></aside></div></div>`;
+}
+
+function viewAdvisor() {
+  const ctx = advisorContext(), top = ctx.recs[0];
+  const prompts = ['Why did you recommend this career?', 'What other careers might suit me?', 'What should I study at university?', 'How do I start learning this field?', 'What are the disadvantages of this career?', 'What skills should I develop?', 'Can I switch from this career to another?'];
+  return `<div class="wrap page"><div class="eyebrow">AI Career Advisor</div><h1 class="h-page" style="margin-top:8px">Ask about your path</h1>
+    <div class="callout" style="margin:12px 0 22px">${ico('info')}<div><b>Demo mode.</b> Replies are generated locally from your results and the career data in this app. No AI service is connected, and no API key is stored in the page.</div></div>
+    <div class="adv"><div class="card chat"><div class="chat-log" id="log" aria-live="polite"></div>
+      <form class="chat-in" id="chatForm"><input type="text" id="chatIn" placeholder="Ask about a career, your results or what to study" aria-label="Your question" autocomplete="off"><button class="btn btn-primary" type="submit" aria-label="Send">${ico('send')}</button></form></div>
+    <aside class="grid" style="gap:14px"><div class="card pad"><h3 style="font-size:.95rem;margin-bottom:10px">Context I am using</h3>
+      <div class="small muted" style="display:grid;gap:6px"><span>${ico('user', '')} Profile: ${ctx.profile ? 'completed' : 'not yet taken'}</span>
+      <span>${ico('target', '')} Top match: ${top ? esc(top.c.title) : 'none yet'}</span><span>${ico('bookmark', '')} Saved careers: ${ctx.saved.length ? ctx.saved.map(c => esc(c.title)).join(', ') : 'none'}</span></div>
+      ${ctx.profile ? '' : `<a class="btn btn-soft btn-sm" style="margin-top:12px" href="#assessment">Take the assessment</a>`}</div>
+    <div class="card pad"><h3 style="font-size:.95rem;margin-bottom:10px">Try asking</h3><div class="sugg">${prompts.map(p => `<button data-a="ask" data-text="${esc(p)}">${esc(p)}</button>`).join('')}</div></div>
+      ${S.chat.length ? `<button class="btn btn-ghost btn-sm" data-a="clearchat">Clear conversation</button>` : ''}</aside></div></div>`;
+}
+function msgHTML(m) { return `<div class="msg ${m.r}">${m.r === 'u' ? esc(m.h) : m.h}</div>`; }
+function paintChat() {
+  const l = $('#log'); if (!l) return;
+  const hello = `<div class="msg a"><p>Hi, I am your career advisor demo. ${S.done ? 'I have your assessment results and can explain any match.' : 'Take the assessment so I can use your results, or ask me about any career.'}</p><p>Pick a question on the right or type your own.</p></div>`;
+  l.innerHTML = hello + S.chat.map(msgHTML).join('');
+  l.scrollTop = l.scrollHeight;
+  if (window.lucide) lucide.createIcons();
+}
+async function ask(text) {
+  text = text.trim(); if (!text) return;
+  const l = $('#log'); if (!l) return;
+  S.chat.push({ r:'u', h:text }); l.insertAdjacentHTML('beforeend', msgHTML({ r:'u', h:text }));
+  l.insertAdjacentHTML('beforeend', `<div class="msg a" id="typing"><span class="typing"><i></i><i></i><i></i></span></div>`);
+  l.scrollTop = l.scrollHeight;
+  let html; try { html = await Advisor.ask(text, advisorContext()); } catch (e) { html = '<p>Something went wrong. Please try again.</p>'; }
+  const ty = $('#typing'); if (ty) ty.remove();
+  S.chat.push({ r:'a', h:html }); S.chat = S.chat.slice(-30);
+  if (route() === 'advisor') { l.insertAdjacentHTML('beforeend', msgHTML({ r:'a', h:html })); l.scrollTop = l.scrollHeight; }
+  log('Asked the advisor: ' + text.slice(0, 50)); persist();
+}
+
+function viewRoadmap() {
+  const ids = Object.keys(S.roadmaps), act = S.activeRm && S.roadmaps[S.activeRm] ? S.activeRm : ids[0];
+  const sug = [...new Set([...S.saved, ...recs().slice(0, 4).map(r => r.c.id)])].filter(i => !S.roadmaps[i]).slice(0, 6);
+  const picker = `<div class="card pad" style="margin-top:20px"><h3 style="font-size:1rem">${ids.length ? 'Start another roadmap' : 'Choose a career to start'}</h3>
+    <p class="muted small" style="margin:6px 0 14px">${sug.length ? 'From your saved careers and top matches:' : 'Pick any career:'}</p>
+    <div class="row">${sug.map(i => `<button class="btn btn-soft btn-sm" data-a="rmgen" data-id="${i}">${esc(byId(i).title)}</button>`).join('')}</div>
+    <div class="row" style="margin-top:14px;gap:8px"><label class="sr" for="rmSel">Choose a career</label><select id="rmSel" style="max-width:320px">${CAREERS.filter(c => !S.roadmaps[c.id]).map(c => `<option value="${c.id}">${esc(c.title)}</option>`).join('')}</select><button class="btn btn-primary btn-sm" data-a="rmsel">${ico('map')}Generate roadmap</button></div></div>`;
+  if (!act) return `<div class="wrap page"><div class="eyebrow">Personal Roadmap</div><h1 class="h-page" style="margin-top:8px">Turn a career into a plan</h1><p class="muted">Choose a career and get eight stages of tasks, from exploring it to preparing your applications.</p>${picker}</div>`;
+  const c = byId(act), p = rmProgress(act);
+  return `<div class="wrap page"><div class="eyebrow">Personal Roadmap</div><h1 class="h-page" style="margin-top:8px">Your path to ${esc(c.title)}</h1>
+    ${ids.length > 1 ? `<div class="chips" style="margin:6px 0 16px">${ids.map(i => `<button class="chip ${i === act ? 'on' : ''}" data-a="rmtab" data-id="${i}">${esc(byId(i).title)}</button>`).join('')}</div>` : ''}
+    <div class="card pad row" style="gap:20px;margin:16px 0 20px">${ring(p.pct)}<div style="flex:1;min-width:200px"><h3 style="font-size:1.05rem">${p.n} of ${p.total} tasks done</h3><p class="muted small" style="margin:4px 0 12px">${p.pct === 100 ? 'Roadmap complete. Nice work.' : 'Tick tasks as you finish them. Progress is saved on this device.'}</p>${bar(p.pct)}</div>
+      <div class="row"><a class="btn btn-ghost btn-sm" href="#career-${c.id}">View career</a><button class="btn btn-ghost btn-sm" data-a="rmreset" data-id="${c.id}">${ico('rotate-ccw')}Reset ticks</button></div></div>
+    ${p.st.map((s, i) => { const n = s.tasks.filter(x => p.done[x.id]).length, d = n === s.tasks.length;
+      return `<section class="card stage"><div class="stage-h ${d ? 'done' : ''}"><span class="nn">${d ? ico('check') : i + 1}</span><div style="flex:1"><h3 style="font-size:1rem">${s.title}</h3></div><span class="tiny">${n}/${s.tasks.length}</span></div>
+      <div class="tasks">${s.tasks.map(tk => `<button class="task ${p.done[tk.id] ? 'on' : ''}" role="checkbox" aria-checked="${!!p.done[tk.id]}" data-a="task" data-id="${c.id}" data-t="${tk.id}"><span class="box">${ico('check')}</span><span>${esc(tk.text)}</span></button>`).join('')}</div></section>`; }).join('')}
+    ${picker}</div>`;
+}
+
+function viewDashboard() {
+  const u = computeProfile(), r = recs(), saved = S.saved.map(byId).filter(Boolean), rms = Object.keys(S.roadmaps);
+  const order = u ? u.map((v, i) => ({ v, i })).sort((a, b) => b.v - a.v).slice(0, 4) : [];
+  const fmt = ts => new Date(ts).toLocaleString([], { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+  return `<div class="wrap page"><div class="row between" style="align-items:flex-end"><div><div class="eyebrow">Dashboard</div>
+    <h1 class="h-page" style="margin-top:8px">Welcome back${S.name ? ', ' + esc(S.name) : ''}</h1><p class="muted">${u ? 'Here is where you stand and what to do next.' : 'Start with the assessment, and your profile and matches will appear here.'}</p></div>
+    <div class="row"><label class="sr" for="nm">Your name</label><input type="text" id="nm" placeholder="Add your name" value="${esc(S.name)}" style="width:170px" maxlength="30"></div></div>
+    <div class="row" style="margin-top:18px"><a class="btn btn-primary" href="#assessment">${ico('target')}${u ? 'Retake assessment' : Object.keys(S.answers).length ? 'Continue assessment' : 'Start assessment'}</a><a class="btn btn-ghost" href="#advisor">${ico('sparkles')}Ask the AI advisor</a><a class="btn btn-ghost" href="#explorer">${ico('search')}Explore careers</a></div>
+    <div class="dash">
+      <section class="card pad c5"><h3>Career profile${u ? '<a class="link small" href="#results">Full results</a>' : ''}</h3>
+        ${u ? `${radar(u, false)}<div style="margin-top:4px">${order.map(o => `<div class="trait-row"><b>${TRAITS[o.i].short}</b>${bar(o.v)}<span class="v">${o.v}</span></div>`).join('')}</div>` : `<div class="empty">No profile yet.<br>18 questions, about 8 minutes.</div>`}</section>
+      <section class="card pad c7"><h3>Recommended careers${u ? '<a class="link small" href="#results">See all</a>' : ''}</h3>
+        ${u ? r.slice(0, 5).map(x => `<div class="li"><span class="tile" style="width:36px;height:36px">${ico(CATICON[x.c.cat])}</span><div class="grow"><a href="#career-${x.c.id}"><b>${esc(x.c.title)}</b></a><span class="tiny">${esc(x.c.cat)} · ${bandOf(x.s)}</span></div><span class="match-b">~${x.s}%</span>${saveBtn(x.c.id)}</div>`).join('') : `<div class="empty">Matches appear after the assessment.</div>`}</section>
+      <section class="card pad c6"><h3>Saved careers</h3>${saved.length ? saved.map(c => `<div class="li"><span class="tile" style="width:36px;height:36px">${ico(CATICON[c.cat])}</span><div class="grow"><a href="#career-${c.id}"><b>${esc(c.title)}</b></a><span class="tiny">${esc(c.cat)}</span></div>${saveBtn(c.id)}</div>`).join('') : `<div class="empty">Nothing saved yet. Use the bookmark on any career in the <a class="link" href="#explorer">Explorer</a>.</div>`}</section>
+      <section class="card pad c6"><h3>Roadmap progress<a class="link small" href="#roadmap">${rms.length ? 'Open' : 'Create'}</a></h3>${rms.length ? rms.map(i => { const p = rmProgress(i); return `<div class="li"><div class="grow"><a href="#roadmap" data-a="rmtab" data-id="${i}"><b>${esc(byId(i).title)}</b></a>${bar(p.pct)}</div><span class="v small" style="font-weight:700">${p.pct}%</span></div>`; }).join('') : `<div class="empty">No roadmap yet. Pick a career and generate one.</div>`}</section>
+      <section class="card pad c12"><h3>Recent activity</h3>${S.activity.length ? S.activity.slice(0, 6).map(a => `<div class="li"><span class="tiny" style="width:120px;flex:none">${fmt(a.t)}</span><span class="grow small">${esc(a.m)}</span></div>`).join('') : `<div class="empty">Your actions will show up here.</div>`}</section>
+    </div>
+    <div style="margin-top:28px" class="row"><span class="tiny">Everything is stored only in this browser.</span>
+      ${UI.confirmReset ? `<button class="btn btn-sm" style="background:var(--warn-soft);color:var(--warn)" data-a="reset-yes">Yes, erase all my data</button><button class="btn btn-ghost btn-sm" data-a="reset-no">Cancel</button>` : `<button class="btn btn-ghost btn-sm" data-a="reset">Erase my data</button>`}</div></div>`;
+}
+
+function viewModal(kind) {
+  const label = kind === 'signup' ? 'Sign up' : 'Log in';
+  return `<div class="modal-bg" data-a="modal-close"><div class="card modal" role="dialog" aria-modal="true" aria-labelledby="mt" data-stop="1">
+    <div class="tile">${ico('shield-check')}</div><h2 id="mt" style="font-size:1.3rem;margin:14px 0 8px">${label} is not available yet</h2>
+    <p class="muted">This prototype has no accounts. Everything you do is saved only in this browser, so there is nothing to sign in to. Real accounts with secure authentication will be added together with a backend.</p>
+    <div class="row" style="margin-top:20px"><a class="btn btn-primary" href="#assessment" data-a="modal-close">Continue without an account</a><button class="btn btn-ghost" data-a="modal-close">Close</button></div></div></div>`;
+}
+
+/* ---------- render ---------- */
+let lastRoute = null;
+function render() {
+  const r = route(); let v;
+  if (r === 'home') v = viewHome();
+  else if (r === 'assessment') v = viewAssessment();
+  else if (r === 'results') v = viewResults();
+  else if (r === 'explorer') v = viewExplorer();
+  else if (r.startsWith('career-')) v = viewCareer(r.slice(7));
+  else if (r === 'advisor') v = viewAdvisor();
+  else if (r === 'roadmap') v = viewRoadmap();
+  else if (r === 'dashboard') v = viewDashboard();
+  else v = viewHome();
+  $('#app').innerHTML = header() + (r === 'home' ? v : `<main>${v}</main>`) + footer();
+  UI.anim = false;
+  if (window.lucide) lucide.createIcons();
+  if (r === 'explorer') fillGrid();
+  if (r === 'advisor') paintChat();
+  if (lastRoute !== r && !UI.keepScroll) window.scrollTo(0, 0);
+  UI.keepScroll = false; lastRoute = r;
+  const titles = { home:'Career Navigator AI', assessment:'Assessment', results:'Your results', explorer:'Discover careers', advisor:'AI Advisor', roadmap:'Roadmap', dashboard:'Dashboard' };
+  document.title = r.startsWith('career-') && byId(r.slice(7)) ? byId(r.slice(7)).title + ' · Career Navigator AI' : (titles[r] || 'Career Navigator AI') + (r === 'home' ? '' : ' · Career Navigator AI');
+}
+function toast(m) {
+  const h = $('#toast-host'); h.innerHTML = `<div class="toast" role="status">${esc(m)}</div>`;
+  clearTimeout(toast.t); toast.t = setTimeout(() => h.innerHTML = '', 2200);
+}
+function go(h) { UI.menu = false; if (location.hash.slice(1) === h) render(); else location.hash = h; }
+function openRoadmap(id) {
+  if (!S.roadmaps[id]) { S.roadmaps[id] = {}; log('Generated a roadmap for ' + byId(id).title); }
+  S.activeRm = id; persist(); go('roadmap');
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-a]'); if (!el) return;
+  const a = el.dataset.a, d = el.dataset;
+  if (a === 'modal-close' && e.target.closest('[data-stop]') && !el.closest('[data-stop]') ) return;
+  if (el.matches('.modal-bg') && e.target.closest('.modal')) return;
+  if (a !== 'scroll' && el.tagName === 'A' && a !== 'modal-close') { /* normal link */ }
+  UI.keepScroll = true;
+  switch (a) {
+    case 'menu': UI.menu = !UI.menu; render(); return;
+    case 'modal': $('#modal').innerHTML = viewModal(d.m); if (window.lucide) lucide.createIcons(); UI.menu = false; return;
+    case 'modal-close': $('#modal').innerHTML = ''; return;
+    case 'scroll': { e.preventDefault(); UI.menu = false; const done = () => { const t = document.getElementById(d.to); if (t) t.scrollIntoView({ behavior:'smooth' }); };
+      if (route() !== 'home') { UI.keepScroll = true; location.hash = 'home'; setTimeout(done, 60); } else { render(); setTimeout(done, 30); } return; }
+    case 'cat': F.cat = d.c; F.skills = []; F.q = ''; F.edu = 'all'; UI.keepScroll = false; go('explorer'); return;
+    case 'fcat': F.cat = d.c; render(); return;
+    case 'fskill': F.skills = F.skills.includes(d.s) ? F.skills.filter(x => x !== d.s) : [...F.skills, d.s]; render(); return;
+    case 'fclear': F.q = ''; F.cat = 'All'; F.edu = 'all'; F.skills = []; render(); return;
+    case 'save': {
+      const id = d.id, was = S.saved.includes(id);
+      S.saved = was ? S.saved.filter(x => x !== id) : [...S.saved, id];
+      log((was ? 'Removed from saved: ' : 'Saved career: ') + byId(id).title); persist(); toast(was ? 'Removed from saved' : 'Saved to your list');
+      if (route() === 'explorer') { fillGrid(); } else render();
+      return; }
+    case 'ans': {
+      const q = QS[S.step]; S.answers[q.id] = Number(d.v); persist(); render(); return; }
+    case 'next': {
+      if (S.answers[QS[S.step].id] === undefined) return;
+      if (S.step < QS.length - 1) { S.step++; UI.anim = true; persist(); render(); }
+      else { S.done = true; log('Completed the career assessment'); persist(); UI.keepScroll = false; go('results'); }
+      return; }
+    case 'back': if (S.step > 0) { S.step--; UI.anim = true; persist(); render(); } return;
+    case 'retake': S.done = false; S.step = 0; persist(); render(); return;
+    case 'rmgen': openRoadmap(d.id); return;
+    case 'rmsel': openRoadmap($('#rmSel').value); return;
+    case 'rmtab': S.activeRm = d.id; persist(); if (route() === 'roadmap') render(); else go('roadmap'); return;
+    case 'rmreset': S.roadmaps[d.id] = {}; persist(); render(); return;
+    case 'task': {
+      const m = S.roadmaps[d.id] || (S.roadmaps[d.id] = {}); m[d.t] = !m[d.t];
+      if (m[d.t]) { const tx = rmProgress(d.id); log(`Completed a roadmap task for ${byId(d.id).title} (${tx.pct}%)`); } persist(); render(); return; }
+    case 'ask': ask(d.text); return;
+    case 'clearchat': S.chat = []; persist(); render(); return;
+    case 'reset': UI.confirmReset = true; render(); return;
+    case 'reset-no': UI.confirmReset = false; render(); return;
+    case 'reset-yes': S = defaults(); UI.confirmReset = false; persist(); toast('Data erased'); render(); return;
+  }
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'q') { F.q = e.target.value; fillGrid(); }
+  if (e.target.id === 'nm') { S.name = e.target.value.slice(0, 30); persist(); }
+});
+document.addEventListener('change', e => { if (e.target.id === 'edu') { F.edu = e.target.value; UI.keepScroll = true; render(); } });
+document.addEventListener('submit', e => {
+  if (e.target.id === 'chatForm') { e.preventDefault(); const i = $('#chatIn'); const v = i.value; i.value = ''; ask(v); }
+});
+document.addEventListener('toggle', e => { const k = e.target.dataset && e.target.dataset.k; if (k) { e.target.open ? UI.openKeys.add(k) : UI.openKeys.delete(k); } }, true);
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#modal').innerHTML) $('#modal').innerHTML = ''; });
+window.addEventListener('hashchange', () => { UI.menu = false; $('#modal').innerHTML = ''; render(); });
+render();
+</script>
+
+</body></html>
